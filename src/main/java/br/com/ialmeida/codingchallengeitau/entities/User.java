@@ -35,12 +35,12 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Rating> ratings;
 
-    public User(Long id, String name, String email, String password, Integer score) {
+    public User(Long id, String name, String email, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.score = score;
+        this.score = 0;
         this.comments = new ArrayList<>();
         this.ratings = new ArrayList<>();
     }
