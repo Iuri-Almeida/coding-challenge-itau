@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_comment")
@@ -30,5 +32,16 @@ public class Comment {
     private User user;
 
     private String message;
+
+    @OneToMany(mappedBy = "comment")
+    private List<CommentResponse> commentResponses;
+
+    public Comment(Long id, Film film, User user, String message) {
+        this.id = id;
+        this.film = film;
+        this.user = user;
+        this.message = message;
+        this.commentResponses = new ArrayList<>();
+    }
 
 }
