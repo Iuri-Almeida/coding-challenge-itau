@@ -47,10 +47,10 @@ public class TestConfig implements CommandLineRunner {
 
         ratingRepository.saveAll(Arrays.asList(r1, r2, r3));
 
-        CommentResponse cr1 = new CommentResponse(null, c1, "First response!");
-        CommentResponse cr2 = new CommentResponse(null, c2, "Second response!");
-        CommentResponse cr3 = new CommentResponse(null, c3, "Third response!");
-        CommentResponse cr4 = new CommentResponse(null, c4, "Fourth response!");
+        CommentResponse cr1 = new CommentResponse(null, u1, c1, "First response!");
+        CommentResponse cr2 = new CommentResponse(null, u2, c2, "Second response!");
+        CommentResponse cr3 = new CommentResponse(null, u2, c3, "Third response!");
+        CommentResponse cr4 = new CommentResponse(null, u1, c4, "Fourth response!");
 
         commentResponseRepository.saveAll(Arrays.asList(cr1, cr2, cr3, cr4));
 

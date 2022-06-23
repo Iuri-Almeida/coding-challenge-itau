@@ -66,9 +66,9 @@ public class FilmService {
         }
 
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Comment with id = '" + commentId + "' not found."));
-        this.updateUserScore(user);
+        user = this.updateUserScore(user);
 
-        commentResponseRepository.save(new CommentResponse(null, comment, message));
+        commentResponseRepository.save(new CommentResponse(null, user, comment, message));
     }
 
     private User updateUserScore(User user) {
