@@ -20,6 +20,7 @@ public class TestConfig implements CommandLineRunner {
     private final RatingRepository ratingRepository;
 
     private final CommentResponseRepository commentResponseRepository;
+    private final ReactionRepository reactionRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -53,6 +54,13 @@ public class TestConfig implements CommandLineRunner {
         CommentResponse cr4 = new CommentResponse(null, u1, c4, "Fourth response!");
 
         commentResponseRepository.saveAll(Arrays.asList(cr1, cr2, cr3, cr4));
+
+        Reaction react1 = new Reaction(null, u1, c1, true);
+        Reaction react2 = new Reaction(null, u1, c2, false);
+        Reaction react3 = new Reaction(null, u2, c1, true);
+        Reaction react4 = new Reaction(null, u2, c4, false);
+
+        reactionRepository.saveAll(Arrays.asList(react1, react2, react3, react4));
 
     }
 }
