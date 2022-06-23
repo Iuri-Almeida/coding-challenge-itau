@@ -1,7 +1,9 @@
 package br.com.ialmeida.codingchallengeitau.config;
 
+import br.com.ialmeida.codingchallengeitau.entities.Comment;
 import br.com.ialmeida.codingchallengeitau.entities.Film;
 import br.com.ialmeida.codingchallengeitau.entities.User;
+import br.com.ialmeida.codingchallengeitau.repositories.CommentRepository;
 import br.com.ialmeida.codingchallengeitau.repositories.FilmRepository;
 import br.com.ialmeida.codingchallengeitau.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -18,6 +20,7 @@ public class TestConfig implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final FilmRepository filmRepository;
+    private final CommentRepository commentRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -31,6 +34,13 @@ public class TestConfig implements CommandLineRunner {
         Film f2 = new Film(null, "Title 2", "Genre 2", "Director 2", "Writer 2");
 
         filmRepository.saveAll(Arrays.asList(f1, f2));
+
+        Comment c1 = new Comment(null, f1, u2, "First message (U2)");
+        Comment c2 = new Comment(null, f2, u2, "Second message (U2)");
+        Comment c3 = new Comment(null, f2, u2, "Third message (U2)");
+        Comment c4 = new Comment(null, f1, u1, "Fourth message (U1)");
+
+        commentRepository.saveAll(Arrays.asList(c1, c2, c3, c4));
 
     }
 }
