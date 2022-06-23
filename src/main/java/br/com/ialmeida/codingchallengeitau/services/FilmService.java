@@ -5,6 +5,7 @@ import br.com.ialmeida.codingchallengeitau.entities.Comment;
 import br.com.ialmeida.codingchallengeitau.entities.Film;
 import br.com.ialmeida.codingchallengeitau.entities.Rating;
 import br.com.ialmeida.codingchallengeitau.entities.User;
+import br.com.ialmeida.codingchallengeitau.entities.enums.Profile;
 import br.com.ialmeida.codingchallengeitau.repositories.CommentRepository;
 import br.com.ialmeida.codingchallengeitau.repositories.FilmRepository;
 import br.com.ialmeida.codingchallengeitau.repositories.RatingRepository;
@@ -52,8 +53,13 @@ public class FilmService {
     }
 
     public void comment(Long filmId, Long userId, String message) {
+        User user = userService.findById(userId);
+        if (user.getProfile().equals(Profile.READER)) {
+            throw new RuntimeException("You cannot comment with profile = '" + user.getProfile() + "'.");
+        }
+
         Film film = this.findById(filmId);
-        User user = this.updateUserScore(userService.findById(userId));
+        user = this.updateUserScore(user);
 
         commentRepository.save(new Comment(null, film, user, message));
     }
