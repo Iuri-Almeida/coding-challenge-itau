@@ -1,5 +1,6 @@
 package br.com.ialmeida.codingchallengeitau.services;
 
+import br.com.ialmeida.codingchallengeitau.clients.FilmClient;
 import br.com.ialmeida.codingchallengeitau.entities.Film;
 import br.com.ialmeida.codingchallengeitau.repositories.FilmRepository;
 import lombok.AllArgsConstructor;
@@ -12,17 +13,25 @@ import java.util.List;
 public class FilmService {
 
     private final FilmRepository filmRepository;
+    private final FilmClient filmClient;
 
     public List<Film> findAll() {
         return filmRepository.findAll();
     }
 
-    public Film findById(Long id) {
-        return filmRepository.findById(id).orElseThrow(() -> new RuntimeException("Film with id = '" + id + "' not found."));
+    public List<Film> findByTitle(String title) {
+        List<Film> films = filmRepository.findByTitleContainingIgnoreCase(title);
+
+        if (films.isEmpty()) {
+            Film apiFilm = filmClient.findFilmByTitle(title);
+            films.add(this.insert(apiFilm));
+        }
+
+        return films;
     }
 
-    public List<Film> findByTitle(String title) {
-        return filmRepository.findByTitleContainingIgnoreCase(title);
+    private Film insert(Film film) {
+        return filmRepository.save(film);
     }
 
 }

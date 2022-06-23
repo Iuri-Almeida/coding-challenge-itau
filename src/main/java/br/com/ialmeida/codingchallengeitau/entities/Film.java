@@ -1,5 +1,6 @@
 package br.com.ialmeida.codingchallengeitau.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,9 +20,16 @@ public class Film {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonProperty(value = "Title")
     private String title;
+
+    @JsonProperty(value = "Genre")
     private String genre;
+
+    @JsonProperty(value = "Director")
     private String director;
-    public String writer;
+
+    @JsonProperty(value = "Writer")
+    private String writer;
 
 }

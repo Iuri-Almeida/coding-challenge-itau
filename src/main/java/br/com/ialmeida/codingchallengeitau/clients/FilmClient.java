@@ -1,5 +1,6 @@
 package br.com.ialmeida.codingchallengeitau.clients;
 
+import br.com.ialmeida.codingchallengeitau.entities.Film;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -8,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface FilmClient {
 
     @GetMapping
-    Object findFilmByTitle(@RequestParam(value = "t") String title);
+    Film findFilmByTitle(@RequestParam(value = "t") String title);
 
 }
