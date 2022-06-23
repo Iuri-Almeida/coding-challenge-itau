@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_film")
@@ -31,5 +33,21 @@ public class Film {
 
     @JsonProperty(value = "Writer")
     private String writer;
+
+    @OneToMany(mappedBy = "film")
+    private List<Comment> comments;
+
+    public Film(Long id, String title, String genre, String director, String writer) {
+        this.id = id;
+        this.title = title;
+        this.genre = genre;
+        this.director = director;
+        this.writer = writer;
+        this.comments = new ArrayList<>();
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
 
 }
