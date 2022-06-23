@@ -24,7 +24,7 @@ public class FilmService {
 
         if (films.isEmpty()) {
             Film apiFilm = filmClient.findByTitle(title);
-            films.add(this.insert(apiFilm));
+            films.add(this.insert(new Film(null, apiFilm.getTitle(), apiFilm.getGenre(), apiFilm.getDirector(), apiFilm.getWriter())));
         }
 
         return films;
