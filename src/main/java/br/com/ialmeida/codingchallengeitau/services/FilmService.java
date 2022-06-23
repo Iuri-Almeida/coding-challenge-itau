@@ -21,4 +21,8 @@ public class FilmService {
         return filmRepository.findById(id).orElseThrow(() -> new RuntimeException("Film with id = '" + id + "' not found."));
     }
 
+    public List<Film> findByTitle(String title) {
+        return filmRepository.findByTitleContainingIgnoreCase(title);
+    }
+
 }
