@@ -45,4 +45,8 @@ public class User {
         this.ratings = new ArrayList<>();
     }
 
+    public void addScore() {
+        score++;
+    }
+
 }
