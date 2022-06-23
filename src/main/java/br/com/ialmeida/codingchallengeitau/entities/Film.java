@@ -53,14 +53,14 @@ public class Film {
     }
 
     public Double getRating() {
-        Double sumRatings = 0.0;
-        Integer totalRatings = ratings.size();
+        double sumRatings = 0.0;
+        int totalRatings = ratings.size();
 
         for (Rating r : ratings) {
             sumRatings += r.getScore();
         }
 
-        return sumRatings / totalRatings;
+        return (totalRatings == 0) ? 0.0 : sumRatings / totalRatings;
     }
 
 }
