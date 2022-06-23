@@ -21,7 +21,7 @@ public class FilmController {
     }
 
     @GetMapping(value = "/film")
-    public ResponseEntity<Object> findByName(@RequestParam(value = "name") String name) {
+    public ResponseEntity<List<Film>> findByName(@RequestParam(value = "name") String name) {
         return ResponseEntity.ok().body(filmService.findByTitle(name));
     }
 
