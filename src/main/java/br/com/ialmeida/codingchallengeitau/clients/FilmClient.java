@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface FilmClient {
 
     @GetMapping
-    Film findFilmByTitle(@RequestParam(value = "t") String title);
+    Film findByTitle(@RequestParam(value = "t") String title);
 
 }

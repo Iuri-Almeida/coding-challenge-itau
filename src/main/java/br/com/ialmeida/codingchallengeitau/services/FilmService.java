@@ -23,7 +23,7 @@ public class FilmService {
         List<Film> films = filmRepository.findByTitleContainingIgnoreCase(title);
 
         if (films.isEmpty()) {
-            Film apiFilm = filmClient.findFilmByTitle(title);
+            Film apiFilm = filmClient.findByTitle(title);
             films.add(this.insert(apiFilm));
         }
 
