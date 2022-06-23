@@ -37,6 +37,11 @@ public class Film {
     @OneToMany(mappedBy = "film")
     private List<Comment> comments;
 
+    @OneToMany(mappedBy = "film")
+    private List<Rating> ratings;
+
+    private Double rating;
+
     public Film(Long id, String title, String genre, String director, String writer) {
         this.id = id;
         this.title = title;
@@ -44,10 +49,18 @@ public class Film {
         this.director = director;
         this.writer = writer;
         this.comments = new ArrayList<>();
+        this.ratings = new ArrayList<>();
     }
 
-    public void addComment(Comment comment) {
-        comments.add(comment);
+    public Double getRating() {
+        Double sumRatings = 0.0;
+        Integer totalRatings = ratings.size();
+
+        for (Rating r : ratings) {
+            sumRatings += r.getScore();
+        }
+
+        return sumRatings / totalRatings;
     }
 
 }

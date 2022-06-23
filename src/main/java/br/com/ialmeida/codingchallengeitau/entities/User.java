@@ -31,6 +31,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Rating> ratings;
+
     public User(Long id, String name, String email, String password, Integer score) {
         this.id = id;
         this.name = name;
@@ -38,10 +42,7 @@ public class User {
         this.password = password;
         this.score = score;
         this.comments = new ArrayList<>();
-    }
-
-    public void addComment(Comment comment) {
-        comments.add(comment);
+        this.ratings = new ArrayList<>();
     }
 
 }
