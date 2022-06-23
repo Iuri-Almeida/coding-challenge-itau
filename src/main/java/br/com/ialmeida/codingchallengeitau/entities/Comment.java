@@ -36,6 +36,9 @@ public class Comment {
     @OneToMany(mappedBy = "comment")
     private List<CommentResponse> commentResponses;
 
+    @OneToMany(mappedBy = "comment")
+    private List<Reaction> reactions;
+
     public Comment(Long id, Film film, User user, String message) {
         this.id = id;
         this.film = film;

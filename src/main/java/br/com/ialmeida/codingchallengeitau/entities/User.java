@@ -44,6 +44,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Rating> ratings;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Reaction> reactions;
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Profile profile;
 
