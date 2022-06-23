@@ -2,6 +2,7 @@ package br.com.ialmeida.codingchallengeitau.entities;
 
 import br.com.ialmeida.codingchallengeitau.entities.enums.Profile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,8 +25,11 @@ public class User {
     private Long id;
 
     private String name;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String email;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer score;
 
     @JsonIgnore
@@ -36,6 +40,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Rating> ratings;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Profile profile;
 
     public User(Long id, String name, String email, String password) {
