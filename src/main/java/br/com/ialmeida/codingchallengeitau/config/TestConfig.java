@@ -1,13 +1,7 @@
 package br.com.ialmeida.codingchallengeitau.config;
 
-import br.com.ialmeida.codingchallengeitau.entities.Comment;
-import br.com.ialmeida.codingchallengeitau.entities.Film;
-import br.com.ialmeida.codingchallengeitau.entities.Rating;
-import br.com.ialmeida.codingchallengeitau.entities.User;
-import br.com.ialmeida.codingchallengeitau.repositories.CommentRepository;
-import br.com.ialmeida.codingchallengeitau.repositories.FilmRepository;
-import br.com.ialmeida.codingchallengeitau.repositories.RatingRepository;
-import br.com.ialmeida.codingchallengeitau.repositories.UserRepository;
+import br.com.ialmeida.codingchallengeitau.entities.*;
+import br.com.ialmeida.codingchallengeitau.repositories.*;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +18,8 @@ public class TestConfig implements CommandLineRunner {
     private final FilmRepository filmRepository;
     private final CommentRepository commentRepository;
     private final RatingRepository ratingRepository;
+
+    private final CommentResponseRepository commentResponseRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -50,6 +46,13 @@ public class TestConfig implements CommandLineRunner {
         Rating r3 = new Rating(null, f2, u2, 8.0);
 
         ratingRepository.saveAll(Arrays.asList(r1, r2, r3));
+
+        CommentResponse cr1 = new CommentResponse(null, c1, "First response!");
+        CommentResponse cr2 = new CommentResponse(null, c2, "Second response!");
+        CommentResponse cr3 = new CommentResponse(null, c3, "Third response!");
+        CommentResponse cr4 = new CommentResponse(null, c4, "Fourth response!");
+
+        commentResponseRepository.saveAll(Arrays.asList(cr1, cr2, cr3, cr4));
 
     }
 }
