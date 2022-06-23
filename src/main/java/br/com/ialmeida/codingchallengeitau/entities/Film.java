@@ -60,7 +60,7 @@ public class Film {
             sumRatings += r.getScore();
         }
 
-        return (totalRatings == 0) ? 0.0 : sumRatings / totalRatings;
+        return (totalRatings == 0) ? 0.0 : Math.round((sumRatings / totalRatings) * 100.0) / 100.0;
     }
 
 }
