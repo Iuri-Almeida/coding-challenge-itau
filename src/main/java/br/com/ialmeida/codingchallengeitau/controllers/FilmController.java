@@ -1,6 +1,7 @@
 package br.com.ialmeida.codingchallengeitau.controllers;
 
 import br.com.ialmeida.codingchallengeitau.entities.Film;
+import br.com.ialmeida.codingchallengeitau.entities.Rating;
 import br.com.ialmeida.codingchallengeitau.services.FilmService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,16 @@ public class FilmController {
     @GetMapping(value = "/film")
     public ResponseEntity<List<Film>> findByName(@RequestParam(value = "name") String name) {
         return ResponseEntity.ok().body(filmService.findByTitle(name));
+    }
+
+    @GetMapping(value = "/rating")
+    public ResponseEntity<Void> rating(
+            @RequestParam(value = "filmId") Long filmId,
+            @RequestParam(value = "userId") Long userId,
+            @RequestParam(value = "score") Double score
+    ) {
+        filmService.rating(filmId, userId, score);
+        return ResponseEntity.noContent().build();
     }
 
 }

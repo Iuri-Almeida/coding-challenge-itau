@@ -2,7 +2,11 @@ package br.com.ialmeida.codingchallengeitau.services;
 
 import br.com.ialmeida.codingchallengeitau.clients.FilmClient;
 import br.com.ialmeida.codingchallengeitau.entities.Film;
+import br.com.ialmeida.codingchallengeitau.entities.Rating;
+import br.com.ialmeida.codingchallengeitau.entities.User;
 import br.com.ialmeida.codingchallengeitau.repositories.FilmRepository;
+import br.com.ialmeida.codingchallengeitau.repositories.RatingRepository;
+import br.com.ialmeida.codingchallengeitau.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +17,17 @@ import java.util.List;
 public class FilmService {
 
     private final FilmRepository filmRepository;
+    private final RatingRepository ratingRepository;
+    private final UserRepository userRepository;
     private final FilmClient filmClient;
+    private final UserService userService;
 
     public List<Film> findAll() {
         return filmRepository.findAll();
+    }
+
+    public Film findById(Long id) {
+        return filmRepository.findById(id).orElseThrow(() -> new RuntimeException("Film with id = '" + id + "' not found."));
     }
 
     public List<Film> findByTitle(String title) {
@@ -28,6 +39,18 @@ public class FilmService {
         }
 
         return films;
+    }
+
+    public void rating(Long filmId, Long userId, Double score) {
+        Film film = this.findById(filmId);
+        User user = this.updateUserScore(userService.findById(userId));
+
+        ratingRepository.save(new Rating(null, film, user, score));
+    }
+
+    private User updateUserScore(User user) {
+        user.addScore();
+        return userRepository.save(user);
     }
 
     private Film insert(Film film) {
