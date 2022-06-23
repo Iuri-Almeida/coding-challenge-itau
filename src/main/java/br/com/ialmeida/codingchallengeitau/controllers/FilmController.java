@@ -1,7 +1,6 @@
 package br.com.ialmeida.codingchallengeitau.controllers;
 
 import br.com.ialmeida.codingchallengeitau.entities.Film;
-import br.com.ialmeida.codingchallengeitau.entities.Rating;
 import br.com.ialmeida.codingchallengeitau.services.FilmService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +42,16 @@ public class FilmController {
             @RequestParam(value = "message") String message
     ) {
         filmService.comment(filmId, userId, message);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/commentResponse")
+    public ResponseEntity<Void> commentResponse(
+            @RequestParam(value = "commentId") Long commentId,
+            @RequestParam(value = "userId") Long userId,
+            @RequestParam(value = "message") String message
+    ) {
+        filmService.commentResponse(commentId, userId, message);
         return ResponseEntity.noContent().build();
     }
 

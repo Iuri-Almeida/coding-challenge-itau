@@ -1,15 +1,9 @@
 package br.com.ialmeida.codingchallengeitau.services;
 
 import br.com.ialmeida.codingchallengeitau.clients.FilmClient;
-import br.com.ialmeida.codingchallengeitau.entities.Comment;
-import br.com.ialmeida.codingchallengeitau.entities.Film;
-import br.com.ialmeida.codingchallengeitau.entities.Rating;
-import br.com.ialmeida.codingchallengeitau.entities.User;
+import br.com.ialmeida.codingchallengeitau.entities.*;
 import br.com.ialmeida.codingchallengeitau.entities.enums.Profile;
-import br.com.ialmeida.codingchallengeitau.repositories.CommentRepository;
-import br.com.ialmeida.codingchallengeitau.repositories.FilmRepository;
-import br.com.ialmeida.codingchallengeitau.repositories.RatingRepository;
-import br.com.ialmeida.codingchallengeitau.repositories.UserRepository;
+import br.com.ialmeida.codingchallengeitau.repositories.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +17,7 @@ public class FilmService {
     private final RatingRepository ratingRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final CommentResponseRepository commentResponseRepository;
     private final FilmClient filmClient;
     private final UserService userService;
 
@@ -62,6 +57,18 @@ public class FilmService {
         user = this.updateUserScore(user);
 
         commentRepository.save(new Comment(null, film, user, message));
+    }
+
+    public void commentResponse(Long commentId, Long userId, String message) {
+        User user = userService.findById(userId);
+        if (user.getProfile().equals(Profile.READER)) {
+            throw new RuntimeException("You cannot reply to a comment with profile = '" + user.getProfile() + "'.");
+        }
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Comment with id = '" + commentId + "' not found."));
+        this.updateUserScore(user);
+
+        commentResponseRepository.save(new CommentResponse(null, comment, message));
     }
 
     private User updateUserScore(User user) {
