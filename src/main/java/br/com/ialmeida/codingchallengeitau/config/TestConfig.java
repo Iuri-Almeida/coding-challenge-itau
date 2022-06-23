@@ -2,9 +2,11 @@ package br.com.ialmeida.codingchallengeitau.config;
 
 import br.com.ialmeida.codingchallengeitau.entities.Comment;
 import br.com.ialmeida.codingchallengeitau.entities.Film;
+import br.com.ialmeida.codingchallengeitau.entities.Rating;
 import br.com.ialmeida.codingchallengeitau.entities.User;
 import br.com.ialmeida.codingchallengeitau.repositories.CommentRepository;
 import br.com.ialmeida.codingchallengeitau.repositories.FilmRepository;
+import br.com.ialmeida.codingchallengeitau.repositories.RatingRepository;
 import br.com.ialmeida.codingchallengeitau.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -21,6 +23,7 @@ public class TestConfig implements CommandLineRunner {
     private final UserRepository userRepository;
     private final FilmRepository filmRepository;
     private final CommentRepository commentRepository;
+    private final RatingRepository ratingRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -41,6 +44,12 @@ public class TestConfig implements CommandLineRunner {
         Comment c4 = new Comment(null, f1, u1, "Fourth message (U1)");
 
         commentRepository.saveAll(Arrays.asList(c1, c2, c3, c4));
+
+        Rating r1 = new Rating(null, f1, u1, 2.0);
+        Rating r2 = new Rating(null, f2, u1, 5.0);
+        Rating r3 = new Rating(null, f2, u2, 8.0);
+
+        ratingRepository.saveAll(Arrays.asList(r1, r2, r3));
 
     }
 }
