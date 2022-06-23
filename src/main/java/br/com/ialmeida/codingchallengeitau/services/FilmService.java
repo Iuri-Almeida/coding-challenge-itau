@@ -1,9 +1,11 @@
 package br.com.ialmeida.codingchallengeitau.services;
 
 import br.com.ialmeida.codingchallengeitau.clients.FilmClient;
+import br.com.ialmeida.codingchallengeitau.entities.Comment;
 import br.com.ialmeida.codingchallengeitau.entities.Film;
 import br.com.ialmeida.codingchallengeitau.entities.Rating;
 import br.com.ialmeida.codingchallengeitau.entities.User;
+import br.com.ialmeida.codingchallengeitau.repositories.CommentRepository;
 import br.com.ialmeida.codingchallengeitau.repositories.FilmRepository;
 import br.com.ialmeida.codingchallengeitau.repositories.RatingRepository;
 import br.com.ialmeida.codingchallengeitau.repositories.UserRepository;
@@ -19,6 +21,7 @@ public class FilmService {
     private final FilmRepository filmRepository;
     private final RatingRepository ratingRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
     private final FilmClient filmClient;
     private final UserService userService;
 
@@ -46,6 +49,13 @@ public class FilmService {
         User user = this.updateUserScore(userService.findById(userId));
 
         ratingRepository.save(new Rating(null, film, user, score));
+    }
+
+    public void comment(Long filmId, Long userId, String message) {
+        Film film = this.findById(filmId);
+        User user = this.updateUserScore(userService.findById(userId));
+
+        commentRepository.save(new Comment(null, film, user, message));
     }
 
     private User updateUserScore(User user) {

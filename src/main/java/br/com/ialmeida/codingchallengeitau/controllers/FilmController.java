@@ -36,4 +36,14 @@ public class FilmController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping(value = "/comment")
+    public ResponseEntity<Void> comment(
+            @RequestParam(value = "filmId") Long filmId,
+            @RequestParam(value = "userId") Long userId,
+            @RequestParam(value = "message") String message
+    ) {
+        filmService.comment(filmId, userId, message);
+        return ResponseEntity.noContent().build();
+    }
+
 }
