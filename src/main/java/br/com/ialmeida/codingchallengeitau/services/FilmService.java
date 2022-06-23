@@ -18,6 +18,7 @@ public class FilmService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final CommentResponseRepository commentResponseRepository;
+    private final ReactionRepository reactionRepository;
     private final FilmClient filmClient;
     private final UserService userService;
 
@@ -69,6 +70,18 @@ public class FilmService {
         user = this.updateUserScore(user);
 
         commentResponseRepository.save(new CommentResponse(null, user, comment, message));
+    }
+
+    public void react(Long commentId, Long userId, Boolean reaction) {
+        User user = userService.findById(userId);
+        if (user.getProfile().equals(Profile.READER) || user.getProfile().equals(Profile.BASIC)) {
+            throw new RuntimeException("You cannot react to a comment with profile = '" + user.getProfile() + "'.");
+        }
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Comment with id = '" + commentId + "' not found."));
+        user = this.updateUserScore(user);
+
+        reactionRepository.save(new Reaction(null, user, comment, reaction));
     }
 
     private User updateUserScore(User user) {

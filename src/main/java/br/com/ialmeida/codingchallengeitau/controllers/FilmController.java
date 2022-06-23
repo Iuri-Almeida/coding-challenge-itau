@@ -55,4 +55,14 @@ public class FilmController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping(value = "/react")
+    public ResponseEntity<Void> react(
+            @RequestParam(value = "commentId") Long commentId,
+            @RequestParam(value = "userId") Long userId,
+            @RequestParam(value = "reaction") Boolean reaction
+    ) {
+        filmService.react(commentId, userId, reaction);
+        return ResponseEntity.noContent().build();
+    }
+
 }
