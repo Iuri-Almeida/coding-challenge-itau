@@ -1,9 +1,6 @@
 package br.com.ialmeida.codingchallengeitau.exceptions.handlers;
 
-import br.com.ialmeida.codingchallengeitau.exceptions.ProfileBlockException;
-import br.com.ialmeida.codingchallengeitau.exceptions.ResourceNotFoundException;
-import br.com.ialmeida.codingchallengeitau.exceptions.DatabaseException;
-import br.com.ialmeida.codingchallengeitau.exceptions.StandardError;
+import br.com.ialmeida.codingchallengeitau.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -34,6 +31,14 @@ public class CodingChallengeExceptionHandler {
     @ExceptionHandler(ProfileBlockException.class)
     public ResponseEntity<StandardError> profileBlock(ProfileBlockException e, HttpServletRequest request) {
         String error = "Profile type not allowed";
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(DuplicatedActionException.class)
+    public ResponseEntity<StandardError> duplicatedAction(DuplicatedActionException e, HttpServletRequest request) {
+        String error = "Duplicated action";
         HttpStatus status = HttpStatus.FORBIDDEN;
         StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);

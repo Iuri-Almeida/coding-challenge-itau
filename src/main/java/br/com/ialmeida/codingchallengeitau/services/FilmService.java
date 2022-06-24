@@ -4,6 +4,7 @@ import br.com.ialmeida.codingchallengeitau.clients.FilmClient;
 import br.com.ialmeida.codingchallengeitau.entities.*;
 import br.com.ialmeida.codingchallengeitau.entities.enums.Profile;
 import br.com.ialmeida.codingchallengeitau.exceptions.DatabaseException;
+import br.com.ialmeida.codingchallengeitau.exceptions.DuplicatedActionException;
 import br.com.ialmeida.codingchallengeitau.exceptions.ProfileBlockException;
 import br.com.ialmeida.codingchallengeitau.exceptions.ResourceNotFoundException;
 import br.com.ialmeida.codingchallengeitau.repositories.*;
@@ -52,6 +53,12 @@ public class FilmService {
 
     public void rating(Long filmId, Long userId, Double score) {
         Film film = this.findById(filmId);
+        for (Rating r : film.getRatings()) {
+            if (r.getUser().getId().equals(userId)) {
+                throw new DuplicatedActionException("User with id = '" + userId + "' has already rated the film.");
+            }
+        }
+
         User user = this.updateUserScore(userService.findById(userId));
 
         ratingRepository.save(new Rating(null, film, user, score));
@@ -88,6 +95,14 @@ public class FilmService {
         }
 
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comment with id = '" + commentId + "' not found."));
+        for (Reaction r : comment.getReactions()) {
+            if (r.getUser().getId().equals(userId)) {
+                r.setReaction(reaction);
+                reactionRepository.save(r);
+                return;
+            }
+        }
+
         user = this.updateUserScore(user);
 
         reactionRepository.save(new Reaction(null, user, comment, reaction));
