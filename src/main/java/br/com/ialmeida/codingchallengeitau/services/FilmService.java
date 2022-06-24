@@ -98,6 +98,18 @@ public class FilmService {
         commentRepository.delete(comment);
     }
 
+    public void setRepeatedComment(Long commentId, Long userId) {
+        User user = userService.findById(userId);
+        if (user.getProfile().equals(Profile.READER) || user.getProfile().equals(Profile.BASIC) || user.getProfile().equals(Profile.ADVANCED)) {
+            throw new RuntimeException("You cannot set a comment as repeated with profile = '" + user.getProfile() + "'.");
+        }
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Comment with id = '" + commentId + "' not found."));
+        comment.setIsRepeated(true);
+
+        commentRepository.save(comment);
+    }
+
     private User updateUserScore(User user) {
         user.addScore();
         return userRepository.save(user);

@@ -39,12 +39,15 @@ public class Comment {
     @OneToMany(mappedBy = "comment")
     private List<Reaction> reactions;
 
+    private Boolean isRepeated;
+
     public Comment(Long id, Film film, User user, String message) {
         this.id = id;
         this.film = film;
         this.user = user;
         this.message = message;
         this.commentResponses = new ArrayList<>();
+        this.isRepeated = false;
     }
 
 }

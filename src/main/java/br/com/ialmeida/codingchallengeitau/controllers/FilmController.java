@@ -74,4 +74,13 @@ public class FilmController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping(value = "/setRepeatedComment")
+    public ResponseEntity<Void> setRepeatedComment(
+            @RequestParam(value = "commentId") Long commentId,
+            @RequestParam(value = "userId") Long userId
+    ) {
+        filmService.setRepeatedComment(commentId, userId);
+        return ResponseEntity.noContent().build();
+    }
+
 }
