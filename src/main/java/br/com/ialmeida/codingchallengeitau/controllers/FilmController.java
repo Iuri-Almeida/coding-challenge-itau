@@ -65,4 +65,13 @@ public class FilmController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping(value = "/deleteComment")
+    public ResponseEntity<Void> deleteComment(
+            @RequestParam(value = "commentId") Long commentId,
+            @RequestParam(value = "userId") Long userId
+    ) {
+        filmService.deleteComment(commentId, userId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

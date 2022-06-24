@@ -84,6 +84,20 @@ public class FilmService {
         reactionRepository.save(new Reaction(null, user, comment, reaction));
     }
 
+    public void deleteComment(Long commentId, Long userId) {
+        User user = userService.findById(userId);
+        if (user.getProfile().equals(Profile.READER) || user.getProfile().equals(Profile.BASIC) || user.getProfile().equals(Profile.ADVANCED)) {
+            throw new RuntimeException("You cannot delete a comment with profile = '" + user.getProfile() + "'.");
+        }
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Comment with id = '" + commentId + "' not found."));
+
+        commentResponseRepository.deleteAll(comment.getCommentResponses());
+        reactionRepository.deleteAll(comment.getReactions());
+
+        commentRepository.delete(comment);
+    }
+
     private User updateUserScore(User user) {
         user.addScore();
         return userRepository.save(user);
