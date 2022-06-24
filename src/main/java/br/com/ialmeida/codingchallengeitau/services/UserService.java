@@ -1,6 +1,7 @@
 package br.com.ialmeida.codingchallengeitau.services;
 
 import br.com.ialmeida.codingchallengeitau.entities.User;
+import br.com.ialmeida.codingchallengeitau.exceptions.ResourceNotFoundException;
 import br.com.ialmeida.codingchallengeitau.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User with id = '" + id + "' not found."));
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with id = '" + id + "' not found."));
     }
 
 }
