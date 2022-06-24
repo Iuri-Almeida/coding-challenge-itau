@@ -103,8 +103,6 @@ public class FilmService {
             }
         }
 
-        user = this.updateUserScore(user);
-
         reactionRepository.save(new Reaction(null, user, comment, reaction));
     }
 
