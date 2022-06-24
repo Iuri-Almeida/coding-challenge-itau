@@ -3,10 +3,7 @@ package br.com.ialmeida.codingchallengeitau.services;
 import br.com.ialmeida.codingchallengeitau.clients.FilmClient;
 import br.com.ialmeida.codingchallengeitau.entities.*;
 import br.com.ialmeida.codingchallengeitau.entities.enums.Profile;
-import br.com.ialmeida.codingchallengeitau.exceptions.DatabaseException;
-import br.com.ialmeida.codingchallengeitau.exceptions.DuplicatedActionException;
-import br.com.ialmeida.codingchallengeitau.exceptions.ProfileBlockException;
-import br.com.ialmeida.codingchallengeitau.exceptions.ResourceNotFoundException;
+import br.com.ialmeida.codingchallengeitau.exceptions.*;
 import br.com.ialmeida.codingchallengeitau.repositories.*;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -37,6 +35,8 @@ public class FilmService {
     }
 
     public List<Film> findByTitle(String title) {
+        this.validateParams(title);
+
         List<Film> films = filmRepository.findByTitleContainingIgnoreCase(title);
 
         if (films.isEmpty()) {
@@ -52,6 +52,8 @@ public class FilmService {
     }
 
     public void rating(Long filmId, Long userId, Double score) {
+        this.validateParams(filmId, userId, score);
+
         Film film = this.findById(filmId);
         for (Rating r : film.getRatings()) {
             if (r.getUser().getId().equals(userId)) {
@@ -65,6 +67,8 @@ public class FilmService {
     }
 
     public void comment(Long filmId, Long userId, String message) {
+        this.validateParams(filmId, userId, message);
+
         User user = userService.findById(userId);
         if (user.getProfile().equals(Profile.READER)) {
             throw new ProfileBlockException("You cannot comment with profile = '" + user.getProfile() + "'.");
@@ -77,6 +81,8 @@ public class FilmService {
     }
 
     public void commentResponse(Long commentId, Long userId, String message) {
+        this.validateParams(commentId, userId, message);
+
         User user = userService.findById(userId);
         if (user.getProfile().equals(Profile.READER)) {
             throw new ProfileBlockException("You cannot reply to a comment with profile = '" + user.getProfile() + "'.");
@@ -89,6 +95,8 @@ public class FilmService {
     }
 
     public void react(Long commentId, Long userId, Boolean reaction) {
+        this.validateParams(commentId, userId, reaction);
+
         User user = userService.findById(userId);
         if (user.getProfile().equals(Profile.READER) || user.getProfile().equals(Profile.BASIC)) {
             throw new ProfileBlockException("You cannot react to a comment with profile = '" + user.getProfile() + "'.");
@@ -107,6 +115,8 @@ public class FilmService {
     }
 
     public void deleteComment(Long commentId, Long userId) {
+        this.validateParams(commentId, userId);
+
         User user = userService.findById(userId);
         if (user.getProfile().equals(Profile.READER) || user.getProfile().equals(Profile.BASIC) || user.getProfile().equals(Profile.ADVANCED)) {
             throw new ProfileBlockException("You cannot delete a comment with profile = '" + user.getProfile() + "'.");
@@ -127,6 +137,8 @@ public class FilmService {
     }
 
     public void setRepeatedComment(Long commentId, Long userId) {
+        this.validateParams(commentId, userId);
+
         User user = userService.findById(userId);
         if (user.getProfile().equals(Profile.READER) || user.getProfile().equals(Profile.BASIC) || user.getProfile().equals(Profile.ADVANCED)) {
             throw new ProfileBlockException("You cannot set a comment as repeated with profile = '" + user.getProfile() + "'.");
@@ -136,6 +148,36 @@ public class FilmService {
         comment.setIsRepeated(true);
 
         commentRepository.save(comment);
+    }
+
+    private void validateParams(String title) {
+        if (Objects.equals(title, "")) {
+            throw new NullParameterException("You cannot search with null parameters.");
+        }
+    }
+
+    private void validateParams(Long id1, Long id2, Double score) {
+        if (id1 == null || id2 == null || score == null) {
+            throw new NullParameterException("You cannot rate with null parameters.");
+        }
+    }
+
+    private void validateParams(Long id1, Long id2, String message) {
+        if (id1 == null || id2 == null || Objects.equals(message, "")) {
+            throw new NullParameterException("You cannot comment with null parameters.");
+        }
+    }
+
+    private void validateParams(Long id1, Long id2, Boolean reaction) {
+        if (id1 == null || id2 == null || reaction == null) {
+            throw new NullParameterException("You cannot react with null parameters.");
+        }
+    }
+
+    private void validateParams(Long id1, Long id2) {
+        if (id1 == null || id2 == null) {
+            throw new NullParameterException("You cannot delete or set a comment as repeated with null parameters.");
+        }
     }
 
     private User updateUserScore(User user) {

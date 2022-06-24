@@ -21,15 +21,15 @@ public class FilmController {
     }
 
     @GetMapping(value = "/film")
-    public ResponseEntity<List<Film>> findByName(@RequestParam(value = "name") String name) {
+    public ResponseEntity<List<Film>> findByName(@RequestParam(value = "name", defaultValue = "") String name) {
         return ResponseEntity.ok().body(filmService.findByTitle(name));
     }
 
     @GetMapping(value = "/rating")
     public ResponseEntity<Void> rating(
-            @RequestParam(value = "filmId") Long filmId,
-            @RequestParam(value = "userId") Long userId,
-            @RequestParam(value = "score") Double score
+            @RequestParam(value = "filmId", defaultValue = "") Long filmId,
+            @RequestParam(value = "userId", defaultValue = "") Long userId,
+            @RequestParam(value = "score", defaultValue = "") Double score
     ) {
         filmService.rating(filmId, userId, score);
         return ResponseEntity.noContent().build();
@@ -37,9 +37,9 @@ public class FilmController {
 
     @GetMapping(value = "/comment")
     public ResponseEntity<Void> comment(
-            @RequestParam(value = "filmId") Long filmId,
-            @RequestParam(value = "userId") Long userId,
-            @RequestParam(value = "message") String message
+            @RequestParam(value = "filmId", defaultValue = "") Long filmId,
+            @RequestParam(value = "userId", defaultValue = "") Long userId,
+            @RequestParam(value = "message", defaultValue = "") String message
     ) {
         filmService.comment(filmId, userId, message);
         return ResponseEntity.noContent().build();
@@ -47,9 +47,9 @@ public class FilmController {
 
     @GetMapping(value = "/commentResponse")
     public ResponseEntity<Void> commentResponse(
-            @RequestParam(value = "commentId") Long commentId,
-            @RequestParam(value = "userId") Long userId,
-            @RequestParam(value = "message") String message
+            @RequestParam(value = "commentId", defaultValue = "") Long commentId,
+            @RequestParam(value = "userId", defaultValue = "") Long userId,
+            @RequestParam(value = "message", defaultValue = "") String message
     ) {
         filmService.commentResponse(commentId, userId, message);
         return ResponseEntity.noContent().build();
@@ -57,9 +57,9 @@ public class FilmController {
 
     @GetMapping(value = "/react")
     public ResponseEntity<Void> react(
-            @RequestParam(value = "commentId") Long commentId,
-            @RequestParam(value = "userId") Long userId,
-            @RequestParam(value = "reaction") Boolean reaction
+            @RequestParam(value = "commentId", defaultValue = "") Long commentId,
+            @RequestParam(value = "userId", defaultValue = "") Long userId,
+            @RequestParam(value = "reaction", defaultValue = "") Boolean reaction
     ) {
         filmService.react(commentId, userId, reaction);
         return ResponseEntity.noContent().build();
@@ -67,8 +67,8 @@ public class FilmController {
 
     @GetMapping(value = "/deleteComment")
     public ResponseEntity<Void> deleteComment(
-            @RequestParam(value = "commentId") Long commentId,
-            @RequestParam(value = "userId") Long userId
+            @RequestParam(value = "commentId", defaultValue = "") Long commentId,
+            @RequestParam(value = "userId", defaultValue = "") Long userId
     ) {
         filmService.deleteComment(commentId, userId);
         return ResponseEntity.noContent().build();
@@ -76,8 +76,8 @@ public class FilmController {
 
     @GetMapping(value = "/setRepeatedComment")
     public ResponseEntity<Void> setRepeatedComment(
-            @RequestParam(value = "commentId") Long commentId,
-            @RequestParam(value = "userId") Long userId
+            @RequestParam(value = "commentId", defaultValue = "") Long commentId,
+            @RequestParam(value = "userId", defaultValue = "") Long userId
     ) {
         filmService.setRepeatedComment(commentId, userId);
         return ResponseEntity.noContent().build();
