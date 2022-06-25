@@ -5,7 +5,6 @@ import br.com.ialmeida.codingchallengeitau.entities.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,11 +21,9 @@ import java.util.Date;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    @Value("${api.token.time}")
-    private int TOKEN_TIME;
+    private final long TOKEN_TIME = 2628011111L;
 
-    @Value("${api.token.secret}")
-    private String TOKEN_SECRET;
+    private final String TOKEN_SECRET = "d42b825e-a76a-41b4-ae99-c229ca400103";
 
     private final AuthenticationManager authenticationManager;
 

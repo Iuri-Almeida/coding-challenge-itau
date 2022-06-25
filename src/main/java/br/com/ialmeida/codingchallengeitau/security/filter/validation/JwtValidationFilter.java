@@ -2,7 +2,6 @@ package br.com.ialmeida.codingchallengeitau.security.filter.validation;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,8 +16,7 @@ import java.util.ArrayList;
 
 public class JwtValidationFilter extends BasicAuthenticationFilter {
 
-    @Value("${api.token.secret}")
-    private String TOKEN_SECRET;
+    private final String TOKEN_SECRET = "d42b825e-a76a-41b4-ae99-c229ca400103";
 
     public JwtValidationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
@@ -46,7 +44,7 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
     }
 
     private UsernamePasswordAuthenticationToken getAuthenticationToken(String token) {
-        String username = JWT.require(Algorithm.HMAC512(TOKEN_SECRET))
+        String username = JWT.require(Algorithm.HMAC512(this.TOKEN_SECRET))
                 .build()
                 .verify(token)
                 .getSubject();
