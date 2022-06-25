@@ -4,10 +4,7 @@ import br.com.ialmeida.codingchallengeitau.entities.User;
 import br.com.ialmeida.codingchallengeitau.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,6 +23,11 @@ public class UserController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<User> findById(@PathVariable Long id) {
         return ResponseEntity.ok().body(userService.findById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<User> insert(@RequestBody User user) {
+        return ResponseEntity.ok().body(userService.insert(user));
     }
 
 }
