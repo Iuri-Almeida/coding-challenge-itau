@@ -1,4 +1,4 @@
-package br.com.ialmeida.codingchallengeitau.details.service.impl;
+package br.com.ialmeida.codingchallengeitau.details.services.impl;
 
 import br.com.ialmeida.codingchallengeitau.details.UserDetail;
 import br.com.ialmeida.codingchallengeitau.entities.User;
