@@ -28,6 +28,7 @@ public class UserService {
 
     public User insert(User user) {
         this.validateParams(user);
+        this.validateUser(user);
 
         user.setPassword(encoder.encode(user.getPassword()));
 
@@ -38,7 +39,9 @@ public class UserService {
         if (user.getName() == null || user.getEmail() == null || user.getPassword() == null) {
             throw new NullParameterException("You cannot save user with null parameters.");
         }
+    }
 
+    private void validateUser(User user) {
         Optional<User> dbUser = userRepository.findByEmail(user.getEmail());
         if (dbUser.isPresent()) {
             throw new RuntimeException("There is already a user with e-mail = '" + user.getEmail() + "'.");
