@@ -30,7 +30,7 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
         String HEADER_ATTRIBUTE = "Authorization";
         String ATTRIBUTE_PREFIX = "Bearer ";
 
-        String attribute = request.getHeader(HEADER_ATTRIBUTE);
+        String attribute = request.getParameter(HEADER_ATTRIBUTE);
 
         if (attribute == null || !attribute.startsWith(ATTRIBUTE_PREFIX)) {
             chain.doFilter(request, response);
