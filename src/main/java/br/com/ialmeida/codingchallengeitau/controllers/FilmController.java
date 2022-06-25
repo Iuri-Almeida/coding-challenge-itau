@@ -40,48 +40,48 @@ public class FilmController {
     @GetMapping(value = "/comment")
     public ResponseEntity<Void> comment(
             @RequestParam(value = "filmId", defaultValue = "") Long filmId,
-            @RequestParam(value = "userId", defaultValue = "") Long userId,
+            @RequestParam(value = "token", defaultValue = "") String token,
             @RequestParam(value = "message", defaultValue = "") String message
     ) {
-        filmService.comment(filmId, userId, message);
+        filmService.comment(filmId, token, message);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = "/commentResponse")
     public ResponseEntity<Void> commentResponse(
             @RequestParam(value = "commentId", defaultValue = "") Long commentId,
-            @RequestParam(value = "userId", defaultValue = "") Long userId,
+            @RequestParam(value = "token", defaultValue = "") String token,
             @RequestParam(value = "message", defaultValue = "") String message
     ) {
-        filmService.commentResponse(commentId, userId, message);
+        filmService.commentResponse(commentId, token, message);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = "/react")
     public ResponseEntity<Void> react(
             @RequestParam(value = "commentId", defaultValue = "") Long commentId,
-            @RequestParam(value = "userId", defaultValue = "") Long userId,
+            @RequestParam(value = "token", defaultValue = "") String token,
             @RequestParam(value = "reaction", defaultValue = "") Boolean reaction
     ) {
-        filmService.react(commentId, userId, reaction);
+        filmService.react(commentId, token, reaction);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = "/deleteComment")
     public ResponseEntity<Void> deleteComment(
             @RequestParam(value = "commentId", defaultValue = "") Long commentId,
-            @RequestParam(value = "userId", defaultValue = "") Long userId
+            @RequestParam(value = "token", defaultValue = "") String token
     ) {
-        filmService.deleteComment(commentId, userId);
+        filmService.deleteComment(commentId, token);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = "/setRepeatedComment")
     public ResponseEntity<Void> setRepeatedComment(
             @RequestParam(value = "commentId", defaultValue = "") Long commentId,
-            @RequestParam(value = "userId", defaultValue = "") Long userId
+            @RequestParam(value = "token", defaultValue = "") String token
     ) {
-        filmService.setRepeatedComment(commentId, userId);
+        filmService.setRepeatedComment(commentId, token);
         return ResponseEntity.noContent().build();
     }
 
