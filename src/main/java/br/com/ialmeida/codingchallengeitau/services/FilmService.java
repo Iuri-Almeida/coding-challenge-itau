@@ -5,7 +5,7 @@ import br.com.ialmeida.codingchallengeitau.entities.*;
 import br.com.ialmeida.codingchallengeitau.entities.enums.Profile;
 import br.com.ialmeida.codingchallengeitau.exceptions.*;
 import br.com.ialmeida.codingchallengeitau.repositories.*;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -14,8 +14,10 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-@AllArgsConstructor
 public class FilmService {
+
+    @Value("${api.key}")
+    private String apiKey;
 
     private final FilmRepository filmRepository;
     private final RatingRepository ratingRepository;
@@ -25,6 +27,17 @@ public class FilmService {
     private final ReactionRepository reactionRepository;
     private final FilmClient filmClient;
     private final UserService userService;
+
+    public FilmService(FilmRepository filmRepository, RatingRepository ratingRepository, UserRepository userRepository, CommentRepository commentRepository, CommentResponseRepository commentResponseRepository, ReactionRepository reactionRepository, FilmClient filmClient, UserService userService) {
+        this.filmRepository = filmRepository;
+        this.ratingRepository = ratingRepository;
+        this.userRepository = userRepository;
+        this.commentRepository = commentRepository;
+        this.commentResponseRepository = commentResponseRepository;
+        this.reactionRepository = reactionRepository;
+        this.filmClient = filmClient;
+        this.userService = userService;
+    }
 
     public List<Film> findAll() {
         return filmRepository.findAll();
@@ -40,7 +53,7 @@ public class FilmService {
         List<Film> films = filmRepository.findByTitleContainingIgnoreCase(title);
 
         if (films.isEmpty()) {
-            Film apiFilm = filmClient.findByTitle(title);
+            Film apiFilm = filmClient.findByTitle(title, this.apiKey);
             if (apiFilm.getTitle() == null && apiFilm.getGenre() == null && apiFilm.getDirector() == null && apiFilm.getWriter() == null) {
                 throw new ResourceNotFoundException("Film with title = " + title + "' not found.");
             }
