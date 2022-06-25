@@ -216,7 +216,7 @@ public class FilmService {
                     .getSubject();
             return userService.findByEmail(email);
         } catch (SignatureVerificationException e) {
-            throw new RuntimeException("You must use a valid JWT token.");
+            throw new JwtAuthenticationException("You must use a valid JWT token.");
         }
     }
 

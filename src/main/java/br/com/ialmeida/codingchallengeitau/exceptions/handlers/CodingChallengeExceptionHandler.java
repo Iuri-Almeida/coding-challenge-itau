@@ -31,7 +31,7 @@ public class CodingChallengeExceptionHandler {
     @ExceptionHandler(ProfileBlockException.class)
     public ResponseEntity<StandardError> profileBlock(ProfileBlockException e, HttpServletRequest request) {
         String error = "Profile type not allowed";
-        HttpStatus status = HttpStatus.FORBIDDEN;
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
         StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
@@ -48,6 +48,14 @@ public class CodingChallengeExceptionHandler {
     public ResponseEntity<StandardError> duplicatedAction(NullParameterException e, HttpServletRequest request) {
         String error = "Parameter null";
         HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(JwtAuthenticationException.class)
+    public ResponseEntity<StandardError> authentication(JwtAuthenticationException e, HttpServletRequest request) {
+        String error = "Authentication error";
+        HttpStatus status = HttpStatus.SERVICE_UNAVAILABLE;
         StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }

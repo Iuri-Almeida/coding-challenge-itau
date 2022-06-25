@@ -2,6 +2,7 @@ package br.com.ialmeida.codingchallengeitau.security.filter.authentication;
 
 import br.com.ialmeida.codingchallengeitau.details.UserDetail;
 import br.com.ialmeida.codingchallengeitau.entities.User;
+import br.com.ialmeida.codingchallengeitau.exceptions.JwtAuthenticationException;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,7 +42,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     new ArrayList<>()
             ));
         } catch (IOException e) {
-            throw new RuntimeException("Error authenticating user.");
+            throw new JwtAuthenticationException("Error authenticating user.");
         }
     }
 

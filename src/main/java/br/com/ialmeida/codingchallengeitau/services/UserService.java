@@ -4,6 +4,7 @@ import br.com.ialmeida.codingchallengeitau.entities.User;
 import br.com.ialmeida.codingchallengeitau.entities.enums.Profile;
 import br.com.ialmeida.codingchallengeitau.exceptions.DuplicatedActionException;
 import br.com.ialmeida.codingchallengeitau.exceptions.NullParameterException;
+import br.com.ialmeida.codingchallengeitau.exceptions.ProfileBlockException;
 import br.com.ialmeida.codingchallengeitau.exceptions.ResourceNotFoundException;
 import br.com.ialmeida.codingchallengeitau.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -57,7 +58,7 @@ public class UserService {
 
     private void validateUserProfile(User user) {
         if (user.getProfile() != Profile.MODERATOR) {
-            throw new RuntimeException("Only moderators can insert users.");
+            throw new ProfileBlockException("Only moderators can insert users.");
         }
     }
 
