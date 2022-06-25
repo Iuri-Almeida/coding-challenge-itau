@@ -1,6 +1,7 @@
 package br.com.ialmeida.codingchallengeitau.services;
 
 import br.com.ialmeida.codingchallengeitau.entities.User;
+import br.com.ialmeida.codingchallengeitau.entities.enums.Profile;
 import br.com.ialmeida.codingchallengeitau.exceptions.DuplicatedActionException;
 import br.com.ialmeida.codingchallengeitau.exceptions.NullParameterException;
 import br.com.ialmeida.codingchallengeitau.exceptions.ResourceNotFoundException;
@@ -34,6 +35,7 @@ public class UserService {
     public User insert(User user) {
         this.validateParams(user);
         this.validateUser(user);
+        this.validateUserProfile(user);
 
         user.setPassword(encoder.encode(user.getPassword()));
 
@@ -50,6 +52,12 @@ public class UserService {
         Optional<User> dbUser = userRepository.findByEmail(user.getEmail());
         if (dbUser.isPresent()) {
             throw new DuplicatedActionException("There is already a user with e-mail = '" + user.getEmail() + "'.");
+        }
+    }
+
+    private void validateUserProfile(User user) {
+        if (user.getProfile() != Profile.MODERATOR) {
+            throw new RuntimeException("Only moderators can insert users.");
         }
     }
 
