@@ -5,6 +5,9 @@ import br.com.ialmeida.codingchallengeitau.entities.*;
 import br.com.ialmeida.codingchallengeitau.entities.enums.Profile;
 import br.com.ialmeida.codingchallengeitau.exceptions.*;
 import br.com.ialmeida.codingchallengeitau.repositories.*;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -64,17 +67,19 @@ public class FilmService {
         return films;
     }
 
-    public void rating(Long filmId, Long userId, Double score) {
-        this.validateParams(filmId, userId, score);
+    public void rating(Long filmId, String token, Double score) {
+        this.validateParams(filmId, token, score);
+
+        User user = this.getUserByJwtToken(token);
 
         Film film = this.findById(filmId);
         for (Rating r : film.getRatings()) {
-            if (r.getUser().getId().equals(userId)) {
-                throw new DuplicatedActionException("User with id = '" + userId + "' has already rated the film.");
+            if (r.getUser().equals(user)) {
+                throw new DuplicatedActionException("User with email = '" + user.getEmail() + "' has already rated the film.");
             }
         }
 
-        User user = this.updateUserScore(userService.findById(userId));
+        user = this.updateUserScore(user);
 
         ratingRepository.save(new Rating(null, film, user, score));
     }
@@ -169,8 +174,8 @@ public class FilmService {
         }
     }
 
-    private void validateParams(Long id1, Long id2, Double score) {
-        if (id1 == null || id2 == null || score == null) {
+    private void validateParams(Long id1, String token, Double score) {
+        if (id1 == null || token == null || score == null) {
             throw new NullParameterException("You cannot rate with null parameters.");
         }
     }
@@ -200,6 +205,19 @@ public class FilmService {
 
     private Film insert(Film film) {
         return filmRepository.save(film);
+    }
+
+    private User getUserByJwtToken(String token) {
+        try {
+            token = token.replace("Bearer ", "");
+            String email = JWT.require(Algorithm.HMAC512("d42b825e-a76a-41b4-ae99-c229ca400103"))
+                    .build()
+                    .verify(token)
+                    .getSubject();
+            return userService.findByEmail(email);
+        } catch (SignatureVerificationException e) {
+            throw new RuntimeException("You must use a valid JWT token.");
+        }
     }
 
 }

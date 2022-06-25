@@ -2,6 +2,8 @@ package br.com.ialmeida.codingchallengeitau.controllers;
 
 import br.com.ialmeida.codingchallengeitau.entities.Film;
 import br.com.ialmeida.codingchallengeitau.services.FilmService;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,10 +30,10 @@ public class FilmController {
     @GetMapping(value = "/rating")
     public ResponseEntity<Void> rating(
             @RequestParam(value = "filmId", defaultValue = "") Long filmId,
-            @RequestParam(value = "userId", defaultValue = "") Long userId,
+            @RequestParam(value = "token", defaultValue = "") String token,
             @RequestParam(value = "score", defaultValue = "") Double score
     ) {
-        filmService.rating(filmId, userId, score);
+        filmService.rating(filmId, token, score);
         return ResponseEntity.noContent().build();
     }
 

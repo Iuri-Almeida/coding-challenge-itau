@@ -27,6 +27,10 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with id = '" + id + "' not found."));
     }
 
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User with email = '" + email + "' not found."));
+    }
+
     public User insert(User user) {
         this.validateParams(user);
         this.validateUser(user);
