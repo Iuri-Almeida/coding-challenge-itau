@@ -25,10 +25,14 @@ public class User {
     private Long id;
 
     private String name;
+
+    @Column(unique = true)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String email;
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer score;
 
