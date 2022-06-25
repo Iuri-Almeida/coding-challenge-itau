@@ -25,7 +25,7 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
-        String HEADER_ATTRIBUTE = "Authorization";
+        String HEADER_ATTRIBUTE = "token";
         String ATTRIBUTE_PREFIX = "Bearer ";
 
         String attribute = request.getParameter(HEADER_ATTRIBUTE);
