@@ -1,6 +1,7 @@
 package br.com.ialmeida.codingchallengeitau.services;
 
 import br.com.ialmeida.codingchallengeitau.entities.User;
+import br.com.ialmeida.codingchallengeitau.exceptions.DuplicatedActionException;
 import br.com.ialmeida.codingchallengeitau.exceptions.NullParameterException;
 import br.com.ialmeida.codingchallengeitau.exceptions.ResourceNotFoundException;
 import br.com.ialmeida.codingchallengeitau.repositories.UserRepository;
@@ -44,7 +45,7 @@ public class UserService {
     private void validateUser(User user) {
         Optional<User> dbUser = userRepository.findByEmail(user.getEmail());
         if (dbUser.isPresent()) {
-            throw new RuntimeException("There is already a user with e-mail = '" + user.getEmail() + "'.");
+            throw new DuplicatedActionException("There is already a user with e-mail = '" + user.getEmail() + "'.");
         }
     }
 
