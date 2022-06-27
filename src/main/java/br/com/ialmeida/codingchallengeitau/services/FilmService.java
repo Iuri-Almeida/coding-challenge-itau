@@ -26,20 +26,21 @@ public class FilmService {
     private String TOKEN_SECRET;
 
     private final FilmRepository filmRepository;
-    private final RatingService ratingService;
-    private final CommentService commentService;
-    private final CommentResponseService commentResponseService;
-    private final ReactionService reactionService;
     private final FilmClient filmClient;
+
+    private final CommentResponseService commentResponseService;
+    private final CommentService commentService;
+    private final RatingService ratingService;
+    private final ReactionService reactionService;
     private final UserService userService;
 
-    public FilmService(FilmRepository filmRepository, RatingService ratingService, CommentService commentService, CommentResponseService commentResponseService, ReactionService reactionService, FilmClient filmClient, UserService userService) {
+    public FilmService(FilmRepository filmRepository, FilmClient filmClient, CommentResponseService commentResponseService, CommentService commentService, RatingService ratingService, ReactionService reactionService, UserService userService) {
         this.filmRepository = filmRepository;
-        this.ratingService = ratingService;
-        this.commentService = commentService;
-        this.commentResponseService = commentResponseService;
-        this.reactionService = reactionService;
         this.filmClient = filmClient;
+        this.commentResponseService = commentResponseService;
+        this.commentService = commentService;
+        this.ratingService = ratingService;
+        this.reactionService = reactionService;
         this.userService = userService;
     }
 
