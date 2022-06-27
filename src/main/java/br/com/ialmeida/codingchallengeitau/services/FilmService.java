@@ -5,7 +5,6 @@ import br.com.ialmeida.codingchallengeitau.entities.*;
 import br.com.ialmeida.codingchallengeitau.entities.enums.Profile;
 import br.com.ialmeida.codingchallengeitau.exceptions.*;
 import br.com.ialmeida.codingchallengeitau.repositories.*;
-import br.com.ialmeida.codingchallengeitau.security.util.JwtUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
@@ -22,6 +21,9 @@ public class FilmService {
 
     @Value("${api.key}")
     private String apiKey;
+
+    @Value("${api.token.secret}")
+    private String TOKEN_SECRET;
 
     private final FilmRepository filmRepository;
     private final RatingRepository ratingRepository;
@@ -225,7 +227,7 @@ public class FilmService {
     private User getUserByJwtToken(String token) {
         try {
             token = token.replace("Bearer ", "");
-            String email = JWT.require(Algorithm.HMAC512(JwtUtil.TOKEN_SECRET))
+            String email = JWT.require(Algorithm.HMAC512(this.TOKEN_SECRET))
                     .build()
                     .verify(token)
                     .getSubject();
