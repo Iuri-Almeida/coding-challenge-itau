@@ -30,17 +30,17 @@ public class FilmService {
     private final UserRepository userRepository;
     private final CommentService commentService;
     private final CommentResponseService commentResponseService;
-    private final ReactionRepository reactionRepository;
+    private final ReactionService reactionService;
     private final FilmClient filmClient;
     private final UserService userService;
 
-    public FilmService(FilmRepository filmRepository, RatingService ratingService, UserRepository userRepository, CommentService commentService, CommentResponseService commentResponseService, ReactionRepository reactionRepository, FilmClient filmClient, UserService userService) {
+    public FilmService(FilmRepository filmRepository, RatingService ratingService, UserRepository userRepository, CommentService commentService, CommentResponseService commentResponseService, ReactionService reactionService, FilmClient filmClient, UserService userService) {
         this.filmRepository = filmRepository;
         this.ratingService = ratingService;
         this.userRepository = userRepository;
         this.commentService = commentService;
         this.commentResponseService = commentResponseService;
-        this.reactionRepository = reactionRepository;
+        this.reactionService = reactionService;
         this.filmClient = filmClient;
         this.userService = userService;
     }
@@ -127,12 +127,12 @@ public class FilmService {
         for (Reaction r : comment.getReactions()) {
             if (r.getUser().equals(user)) {
                 r.setReaction(reaction);
-                reactionRepository.save(r);
+                reactionService.insert(r);
                 return;
             }
         }
 
-        reactionRepository.save(new Reaction(null, user, comment, reaction));
+        reactionService.insert(new Reaction(null, user, comment, reaction));
     }
 
     public void deleteComment(Long commentId, String token) {
@@ -147,7 +147,7 @@ public class FilmService {
 
         try {
             commentResponseService.deleteAll(comment.getCommentResponses());
-            reactionRepository.deleteAll(comment.getReactions());
+            reactionService.deleteAll(comment.getReactions());
 
             commentService.delete(comment);
         } catch (EmptyResultDataAccessException e) {
