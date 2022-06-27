@@ -55,7 +55,7 @@ public class CodingChallengeExceptionHandler {
     @ExceptionHandler(JwtAuthenticationException.class)
     public ResponseEntity<StandardError> authentication(JwtAuthenticationException e, HttpServletRequest request) {
         String error = "Authentication error";
-        HttpStatus status = HttpStatus.SERVICE_UNAVAILABLE;
+        HttpStatus status = HttpStatus.BAD_REQUEST;
         StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
