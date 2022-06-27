@@ -1,8 +1,10 @@
 package br.com.ialmeida.codingchallengeitau.security.filter.validation;
 
+import br.com.ialmeida.codingchallengeitau.exceptions.JwtAuthenticationException;
 import br.com.ialmeida.codingchallengeitau.security.util.JwtUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,11 +45,15 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
     }
 
     private UsernamePasswordAuthenticationToken getAuthenticationToken(String token) {
-        String username = JWT.require(Algorithm.HMAC512(JwtUtil.TOKEN_SECRET))
-                .build()
-                .verify(token)
-                .getSubject();
+        try {
+            String username = JWT.require(Algorithm.HMAC512(JwtUtil.TOKEN_SECRET))
+                    .build()
+                    .verify(token)
+                    .getSubject();
 
-        return (username == null) ? null : new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
+            return (username == null) ? null : new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
+        } catch (SignatureVerificationException e) {
+            throw new JwtAuthenticationException("You must use a valid JWT token.");
+        }
     }
 }
