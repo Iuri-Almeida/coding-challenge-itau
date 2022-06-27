@@ -29,17 +29,17 @@ public class FilmService {
     private final RatingService ratingService;
     private final UserRepository userRepository;
     private final CommentService commentService;
-    private final CommentResponseRepository commentResponseRepository;
+    private final CommentResponseService commentResponseService;
     private final ReactionRepository reactionRepository;
     private final FilmClient filmClient;
     private final UserService userService;
 
-    public FilmService(FilmRepository filmRepository, RatingService ratingService, UserRepository userRepository, CommentService commentService, CommentResponseRepository commentResponseRepository, ReactionRepository reactionRepository, FilmClient filmClient, UserService userService) {
+    public FilmService(FilmRepository filmRepository, RatingService ratingService, UserRepository userRepository, CommentService commentService, CommentResponseService commentResponseService, ReactionRepository reactionRepository, FilmClient filmClient, UserService userService) {
         this.filmRepository = filmRepository;
         this.ratingService = ratingService;
         this.userRepository = userRepository;
         this.commentService = commentService;
-        this.commentResponseRepository = commentResponseRepository;
+        this.commentResponseService = commentResponseService;
         this.reactionRepository = reactionRepository;
         this.filmClient = filmClient;
         this.userService = userService;
@@ -112,7 +112,7 @@ public class FilmService {
         Comment comment = commentService.findById(commentId);
         user = this.updateUserScore(user);
 
-        commentResponseRepository.save(new CommentResponse(null, user, comment, message));
+        commentResponseService.insert(new CommentResponse(null, user, comment, message));
     }
 
     public void react(Long commentId, String token, Boolean reaction) {
@@ -146,7 +146,7 @@ public class FilmService {
         Comment comment = commentService.findById(commentId);
 
         try {
-            commentResponseRepository.deleteAll(comment.getCommentResponses());
+            commentResponseService.deleteAll(comment.getCommentResponses());
             reactionRepository.deleteAll(comment.getReactions());
 
             commentService.delete(comment);
