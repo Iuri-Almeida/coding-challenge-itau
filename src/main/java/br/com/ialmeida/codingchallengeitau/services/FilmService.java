@@ -28,17 +28,17 @@ public class FilmService {
     private final FilmRepository filmRepository;
     private final RatingService ratingService;
     private final UserRepository userRepository;
-    private final CommentRepository commentRepository;
+    private final CommentService commentService;
     private final CommentResponseRepository commentResponseRepository;
     private final ReactionRepository reactionRepository;
     private final FilmClient filmClient;
     private final UserService userService;
 
-    public FilmService(FilmRepository filmRepository, RatingService ratingService, UserRepository userRepository, CommentRepository commentRepository, CommentResponseRepository commentResponseRepository, ReactionRepository reactionRepository, FilmClient filmClient, UserService userService) {
+    public FilmService(FilmRepository filmRepository, RatingService ratingService, UserRepository userRepository, CommentService commentService, CommentResponseRepository commentResponseRepository, ReactionRepository reactionRepository, FilmClient filmClient, UserService userService) {
         this.filmRepository = filmRepository;
         this.ratingService = ratingService;
         this.userRepository = userRepository;
-        this.commentRepository = commentRepository;
+        this.commentService = commentService;
         this.commentResponseRepository = commentResponseRepository;
         this.reactionRepository = reactionRepository;
         this.filmClient = filmClient;
@@ -98,7 +98,7 @@ public class FilmService {
         Film film = this.findById(filmId);
         user = this.updateUserScore(user);
 
-        commentRepository.save(new Comment(null, film, user, message));
+        commentService.insert(new Comment(null, film, user, message));
     }
 
     public void commentResponse(Long commentId, String token, String message) {
@@ -109,7 +109,7 @@ public class FilmService {
             throw new ProfileBlockException("You cannot reply to a comment with profile = '" + user.getProfile() + "'.");
         }
 
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comment with id = '" + commentId + "' not found."));
+        Comment comment = commentService.findById(commentId);
         user = this.updateUserScore(user);
 
         commentResponseRepository.save(new CommentResponse(null, user, comment, message));
@@ -123,7 +123,7 @@ public class FilmService {
             throw new ProfileBlockException("You cannot react to a comment with profile = '" + user.getProfile() + "'.");
         }
 
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comment with id = '" + commentId + "' not found."));
+        Comment comment = commentService.findById(commentId);
         for (Reaction r : comment.getReactions()) {
             if (r.getUser().equals(user)) {
                 r.setReaction(reaction);
@@ -143,13 +143,13 @@ public class FilmService {
             throw new ProfileBlockException("You cannot delete a comment with profile = '" + user.getProfile() + "'.");
         }
 
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comment with id = '" + commentId + "' not found."));
+        Comment comment = commentService.findById(commentId);
 
         try {
             commentResponseRepository.deleteAll(comment.getCommentResponses());
             reactionRepository.deleteAll(comment.getReactions());
 
-            commentRepository.delete(comment);
+            commentService.delete(comment);
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException("Error deleting comment. Could not found all resources");
         } catch (DataIntegrityViolationException e) {
@@ -165,10 +165,11 @@ public class FilmService {
             throw new ProfileBlockException("You cannot set a comment as repeated with profile = '" + user.getProfile() + "'.");
         }
 
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comment with id = '" + commentId + "' not found."));
+        Comment comment = commentService.findById(commentId);
+
         comment.setIsRepeated(true);
 
-        commentRepository.save(comment);
+        commentService.insert(comment);
     }
 
     public void makeModerator(Long userId, String token) {
