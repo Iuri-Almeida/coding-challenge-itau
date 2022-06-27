@@ -3,6 +3,7 @@ package br.com.ialmeida.codingchallengeitau.security.filter.authentication;
 import br.com.ialmeida.codingchallengeitau.details.UserDetail;
 import br.com.ialmeida.codingchallengeitau.entities.User;
 import br.com.ialmeida.codingchallengeitau.exceptions.JwtAuthenticationException;
+import br.com.ialmeida.codingchallengeitau.security.util.JwtUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,10 +22,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-
-    private final long TOKEN_TIME = 2628011111L;
-
-    private final String TOKEN_SECRET = "d42b825e-a76a-41b4-ae99-c229ca400103";
 
     private final AuthenticationManager authenticationManager;
 
@@ -54,8 +51,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String token = JWT.create()
                 .withSubject(userDetail.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + this.TOKEN_TIME))
-                .sign(Algorithm.HMAC512(this.TOKEN_SECRET));
+                .withExpiresAt(new Date(System.currentTimeMillis() + JwtUtil.TOKEN_TIME))
+                .sign(Algorithm.HMAC512(JwtUtil.TOKEN_SECRET));
 
         response.getWriter().write(token);
         response.getWriter().flush();
