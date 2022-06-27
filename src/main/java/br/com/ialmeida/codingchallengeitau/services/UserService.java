@@ -43,6 +43,10 @@ public class UserService {
         return userRepository.save(new User(null, user.getName(), user.getEmail(), user.getPassword()));
     }
 
+    public User updateUser(User user) {
+        return userRepository.save(user);
+    }
+
     private void validateParams(User user) {
         if (user.getName() == null || user.getEmail() == null || user.getPassword() == null) {
             throw new NullParameterException("You cannot save user with null parameters.");

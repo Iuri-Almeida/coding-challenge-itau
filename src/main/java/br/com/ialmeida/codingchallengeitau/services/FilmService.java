@@ -27,17 +27,15 @@ public class FilmService {
 
     private final FilmRepository filmRepository;
     private final RatingService ratingService;
-    private final UserRepository userRepository;
     private final CommentService commentService;
     private final CommentResponseService commentResponseService;
     private final ReactionService reactionService;
     private final FilmClient filmClient;
     private final UserService userService;
 
-    public FilmService(FilmRepository filmRepository, RatingService ratingService, UserRepository userRepository, CommentService commentService, CommentResponseService commentResponseService, ReactionService reactionService, FilmClient filmClient, UserService userService) {
+    public FilmService(FilmRepository filmRepository, RatingService ratingService, CommentService commentService, CommentResponseService commentResponseService, ReactionService reactionService, FilmClient filmClient, UserService userService) {
         this.filmRepository = filmRepository;
         this.ratingService = ratingService;
-        this.userRepository = userRepository;
         this.commentService = commentService;
         this.commentResponseService = commentResponseService;
         this.reactionService = reactionService;
@@ -183,7 +181,7 @@ public class FilmService {
         User toUser = userService.findById(userId);
         toUser.setProfile(Profile.MODERATOR);
 
-        userRepository.save(toUser);
+        userService.updateUser(toUser);
     }
 
     private void validateParams(String title) {
@@ -218,7 +216,7 @@ public class FilmService {
 
     private User updateUserScore(User user) {
         user.addScore();
-        return userRepository.save(user);
+        return userService.updateUser(user);
     }
 
     private Film insert(Film film) {
