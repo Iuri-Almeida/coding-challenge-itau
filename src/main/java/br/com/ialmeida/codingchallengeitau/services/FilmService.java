@@ -168,6 +168,20 @@ public class FilmService {
         commentRepository.save(comment);
     }
 
+    public void makeModerator(Long userId, String token) {
+        this.validateParams(userId, token);
+
+        User fromUser = this.getUserByJwtToken(token);
+        if (fromUser.getProfile() != Profile.MODERATOR) {
+            throw new ProfileBlockException("You cannot make someone else a moderator with profile = '" + fromUser.getProfile() + "'.");
+        }
+
+        User toUser = userService.findById(userId);
+        toUser.setProfile(Profile.MODERATOR);
+
+        userRepository.save(toUser);
+    }
+
     private void validateParams(String title) {
         if (Objects.equals(title, "")) {
             throw new NullParameterException("You cannot search with null parameters.");
@@ -194,7 +208,7 @@ public class FilmService {
 
     private void validateParams(Long id1, String token) {
         if (id1 == null || Objects.equals(token, "")) {
-            throw new NullParameterException("You cannot delete or set a comment as repeated with null parameters.");
+            throw new NullParameterException("You cannot make moderator, delete or set a comment as repeated with null parameters.");
         }
     }
 

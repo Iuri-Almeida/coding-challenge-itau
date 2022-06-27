@@ -85,4 +85,13 @@ public class FilmController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping(value = "/makeModerator")
+    public ResponseEntity<Void> makeModerator(
+            @RequestParam(value = "userId", defaultValue = "") Long userId,
+            @RequestParam(value = "token", defaultValue = "") String token
+    ) {
+        filmService.makeModerator(userId, token);
+        return ResponseEntity.noContent().build();
+    }
+
 }
