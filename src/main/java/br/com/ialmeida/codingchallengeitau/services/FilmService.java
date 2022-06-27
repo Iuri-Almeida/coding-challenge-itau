@@ -20,7 +20,7 @@ import java.util.Objects;
 public class FilmService {
 
     @Value("${api.key}")
-    private String apiKey;
+    private String API_KEY;
 
     @Value("${api.token.secret}")
     private String TOKEN_SECRET;
@@ -59,7 +59,7 @@ public class FilmService {
         List<Film> films = filmRepository.findByTitleContainingIgnoreCase(title);
 
         if (films.isEmpty()) {
-            Film apiFilm = filmClient.findByTitle(title, this.apiKey);
+            Film apiFilm = filmClient.findByTitle(title, this.API_KEY);
             if (apiFilm.getTitle() == null && apiFilm.getGenre() == null && apiFilm.getDirector() == null && apiFilm.getWriter() == null) {
                 throw new ResourceNotFoundException("Film with title = " + title + "' not found.");
             }
