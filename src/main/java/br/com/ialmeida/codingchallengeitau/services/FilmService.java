@@ -193,26 +193,26 @@ public class FilmService {
         }
     }
 
-    private void validateParams(Long id1, String token, Double score) {
-        if (id1 == null || Objects.equals(token, "") || score == null) {
+    private void validateParams(Long id, String token, Double score) {
+        if (id == null || Objects.equals(token, "") || score == null) {
             throw new NullParameterException("You cannot rate with null parameters.");
         }
     }
 
-    private void validateParams(Long id1, String token, String message) {
-        if (id1 == null || Objects.equals(token, "") || Objects.equals(message, "")) {
+    private void validateParams(Long id, String token, String message) {
+        if (id == null || Objects.equals(token, "") || Objects.equals(message, "")) {
             throw new NullParameterException("You cannot comment with null parameters.");
         }
     }
 
-    private void validateParams(Long id1, String token, Boolean reaction) {
-        if (id1 == null || Objects.equals(token, "") || reaction == null) {
+    private void validateParams(Long id, String token, Boolean reaction) {
+        if (id == null || Objects.equals(token, "") || reaction == null) {
             throw new NullParameterException("You cannot react with null parameters.");
         }
     }
 
-    private void validateParams(Long id1, String token) {
-        if (id1 == null || Objects.equals(token, "")) {
+    private void validateParams(Long id, String token) {
+        if (id == null || Objects.equals(token, "")) {
             throw new NullParameterException("You cannot make moderator, delete or set a comment as repeated with null parameters.");
         }
     }
