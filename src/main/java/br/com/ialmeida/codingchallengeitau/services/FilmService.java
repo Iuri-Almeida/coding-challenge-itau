@@ -26,7 +26,7 @@ public class FilmService {
     private String TOKEN_SECRET;
 
     private final FilmRepository filmRepository;
-    private final RatingRepository ratingRepository;
+    private final RatingService ratingService;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final CommentResponseRepository commentResponseRepository;
@@ -34,9 +34,9 @@ public class FilmService {
     private final FilmClient filmClient;
     private final UserService userService;
 
-    public FilmService(FilmRepository filmRepository, RatingRepository ratingRepository, UserRepository userRepository, CommentRepository commentRepository, CommentResponseRepository commentResponseRepository, ReactionRepository reactionRepository, FilmClient filmClient, UserService userService) {
+    public FilmService(FilmRepository filmRepository, RatingRepository ratingRepository, RatingService ratingService, UserRepository userRepository, CommentRepository commentRepository, CommentResponseRepository commentResponseRepository, ReactionRepository reactionRepository, FilmClient filmClient, UserService userService) {
         this.filmRepository = filmRepository;
-        this.ratingRepository = ratingRepository;
+        this.ratingService = ratingService;
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
         this.commentResponseRepository = commentResponseRepository;
@@ -84,7 +84,7 @@ public class FilmService {
 
         user = this.updateUserScore(user);
 
-        ratingRepository.save(new Rating(null, film, user, score));
+        ratingService.insert(new Rating(null, film, user, score));
     }
 
     public void comment(Long filmId, String token, String message) {
