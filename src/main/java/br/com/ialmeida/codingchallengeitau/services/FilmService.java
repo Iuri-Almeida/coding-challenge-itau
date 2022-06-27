@@ -34,7 +34,7 @@ public class FilmService {
     private final FilmClient filmClient;
     private final UserService userService;
 
-    public FilmService(FilmRepository filmRepository, RatingRepository ratingRepository, RatingService ratingService, UserRepository userRepository, CommentRepository commentRepository, CommentResponseRepository commentResponseRepository, ReactionRepository reactionRepository, FilmClient filmClient, UserService userService) {
+    public FilmService(FilmRepository filmRepository, RatingService ratingService, UserRepository userRepository, CommentRepository commentRepository, CommentResponseRepository commentResponseRepository, ReactionRepository reactionRepository, FilmClient filmClient, UserService userService) {
         this.filmRepository = filmRepository;
         this.ratingService = ratingService;
         this.userRepository = userRepository;
