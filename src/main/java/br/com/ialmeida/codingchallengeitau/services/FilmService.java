@@ -81,7 +81,7 @@ public class FilmService {
             }
         }
 
-        user = this.updateUserScore(user);
+        userService.updateUserScore(user);
 
         ratingService.insert(new Rating(null, film, user, score));
     }
@@ -95,7 +95,7 @@ public class FilmService {
         }
 
         Film film = this.findById(filmId);
-        user = this.updateUserScore(user);
+        userService.updateUserScore(user);
 
         commentService.insert(new Comment(null, film, user, message));
     }
@@ -109,7 +109,7 @@ public class FilmService {
         }
 
         Comment comment = commentService.findById(commentId);
-        user = this.updateUserScore(user);
+        userService.updateUserScore(user);
 
         commentResponseService.insert(new CommentResponse(null, user, comment, message));
     }
@@ -213,11 +213,6 @@ public class FilmService {
         if (id1 == null || Objects.equals(token, "")) {
             throw new NullParameterException("You cannot make moderator, delete or set a comment as repeated with null parameters.");
         }
-    }
-
-    private User updateUserScore(User user) {
-        user.addScore();
-        return userService.updateUser(user);
     }
 
     private Film insert(Film film) {

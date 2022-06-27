@@ -43,8 +43,13 @@ public class UserService {
         return userRepository.save(new User(null, user.getName(), user.getEmail(), user.getPassword()));
     }
 
-    public User updateUser(User user) {
-        return userRepository.save(user);
+    public void updateUser(User user) {
+        userRepository.save(user);
+    }
+
+    public void updateUserScore(User user) {
+        user.addScore();
+        this.updateUser(user);
     }
 
     private void validateParams(User user) {
