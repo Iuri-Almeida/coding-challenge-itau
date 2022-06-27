@@ -77,7 +77,9 @@ public class FilmService {
         Film film = this.findById(filmId);
         for (Rating r : film.getRatings()) {
             if (r.getUser().equals(user)) {
-                throw new DuplicatedActionException("User with email = '" + user.getEmail() + "' has already rated the film.");
+                r.setScore(score);
+                ratingService.insert(r);
+                return;
             }
         }
 
