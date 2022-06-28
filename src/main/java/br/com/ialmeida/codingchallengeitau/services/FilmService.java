@@ -1,6 +1,7 @@
 package br.com.ialmeida.codingchallengeitau.services;
 
 import br.com.ialmeida.codingchallengeitau.clients.FilmClient;
+import br.com.ialmeida.codingchallengeitau.config.PropertiesConfig;
 import br.com.ialmeida.codingchallengeitau.entities.*;
 import br.com.ialmeida.codingchallengeitau.entities.enums.Profile;
 import br.com.ialmeida.codingchallengeitau.exceptions.*;
@@ -8,7 +9,7 @@ import br.com.ialmeida.codingchallengeitau.repositories.*;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -17,13 +18,10 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@AllArgsConstructor
 public class FilmService {
 
-    @Value("${api.key}")
-    private String API_KEY;
-
-    @Value("${api.token.secret}")
-    private String TOKEN_SECRET;
+    private final PropertiesConfig propertiesConfig;
 
     private final FilmRepository filmRepository;
     private final FilmClient filmClient;
@@ -33,16 +31,6 @@ public class FilmService {
     private final RatingService ratingService;
     private final ReactionService reactionService;
     private final UserService userService;
-
-    public FilmService(FilmRepository filmRepository, FilmClient filmClient, CommentResponseService commentResponseService, CommentService commentService, RatingService ratingService, ReactionService reactionService, UserService userService) {
-        this.filmRepository = filmRepository;
-        this.filmClient = filmClient;
-        this.commentResponseService = commentResponseService;
-        this.commentService = commentService;
-        this.ratingService = ratingService;
-        this.reactionService = reactionService;
-        this.userService = userService;
-    }
 
     public List<Film> findAll() {
         return filmRepository.findAll();
@@ -58,7 +46,7 @@ public class FilmService {
         List<Film> films = filmRepository.findByTitleContainingIgnoreCase(title);
 
         if (films.isEmpty()) {
-            Film apiFilm = filmClient.findByTitle(title, this.API_KEY);
+            Film apiFilm = filmClient.findByTitle(title, propertiesConfig.getApiKey());
             if (apiFilm.getTitle() == null && apiFilm.getGenre() == null && apiFilm.getDirector() == null && apiFilm.getWriter() == null) {
                 throw new ResourceNotFoundException("Film with title = " + title + "' not found.");
             }
@@ -239,7 +227,7 @@ public class FilmService {
     private User getUserByJwtToken(String token) {
         try {
             token = token.replace("Bearer ", "");
-            String email = JWT.require(Algorithm.HMAC512(this.TOKEN_SECRET))
+            String email = JWT.require(Algorithm.HMAC512(propertiesConfig.getTokenSecret()))
                     .build()
                     .verify(token)
                     .getSubject();

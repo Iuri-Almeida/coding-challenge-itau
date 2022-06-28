@@ -1,9 +1,9 @@
 package br.com.ialmeida.codingchallengeitau.security.filter.authentication;
 
+import br.com.ialmeida.codingchallengeitau.config.PropertiesConfig;
 import br.com.ialmeida.codingchallengeitau.details.UserDetail;
 import br.com.ialmeida.codingchallengeitau.entities.User;
 import br.com.ialmeida.codingchallengeitau.exceptions.JwtAuthenticationException;
-import br.com.ialmeida.codingchallengeitau.security.util.JwtUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,9 +25,11 @@ import java.util.Date;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
+    private final PropertiesConfig propertiesConfig;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, PropertiesConfig propertiesConfig) {
         this.authenticationManager = authenticationManager;
+        this.propertiesConfig = propertiesConfig;
     }
 
     @Override
@@ -52,8 +54,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String token = JWT.create()
                 .withSubject(userDetail.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + JwtUtil.TOKEN_TIME))
-                .sign(Algorithm.HMAC512(JwtUtil.TOKEN_SECRET));
+                .withExpiresAt(new Date(System.currentTimeMillis() + propertiesConfig.getTokenExpirationTime()))
+                .sign(Algorithm.HMAC512(propertiesConfig.getTokenSecret()));
 
         response.getWriter().write(token);
         response.getWriter().flush();

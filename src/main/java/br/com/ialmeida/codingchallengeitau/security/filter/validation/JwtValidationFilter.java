@@ -1,7 +1,7 @@
 package br.com.ialmeida.codingchallengeitau.security.filter.validation;
 
+import br.com.ialmeida.codingchallengeitau.config.PropertiesConfig;
 import br.com.ialmeida.codingchallengeitau.exceptions.JwtAuthenticationException;
-import br.com.ialmeida.codingchallengeitau.security.util.JwtUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
@@ -19,8 +19,11 @@ import java.util.ArrayList;
 
 public class JwtValidationFilter extends BasicAuthenticationFilter {
 
-    public JwtValidationFilter(AuthenticationManager authenticationManager) {
+    private final PropertiesConfig propertiesConfig;
+
+    public JwtValidationFilter(AuthenticationManager authenticationManager, PropertiesConfig propertiesConfig) {
         super(authenticationManager);
+        this.propertiesConfig = propertiesConfig;
     }
 
     @Override
@@ -46,7 +49,7 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
 
     private UsernamePasswordAuthenticationToken getAuthenticationToken(String token) {
         try {
-            String username = JWT.require(Algorithm.HMAC512(JwtUtil.TOKEN_SECRET))
+            String username = JWT.require(Algorithm.HMAC512(propertiesConfig.getTokenSecret()))
                     .build()
                     .verify(token)
                     .getSubject();

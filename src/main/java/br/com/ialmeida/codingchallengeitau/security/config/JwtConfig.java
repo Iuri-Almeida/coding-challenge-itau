@@ -1,5 +1,6 @@
 package br.com.ialmeida.codingchallengeitau.security.config;
 
+import br.com.ialmeida.codingchallengeitau.config.PropertiesConfig;
 import br.com.ialmeida.codingchallengeitau.details.services.impl.UserDetailServiceImpl;
 import br.com.ialmeida.codingchallengeitau.security.filter.authentication.JwtAuthenticationFilter;
 import br.com.ialmeida.codingchallengeitau.security.filter.validation.JwtValidationFilter;
@@ -22,6 +23,7 @@ public class JwtConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailServiceImpl userDetailService;
     private final PasswordEncoder passwordEncoder;
+    private final PropertiesConfig propertiesConfig;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -35,8 +37,8 @@ public class JwtConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/signUp").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
-                .addFilter(new JwtValidationFilter(authenticationManager()))
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), propertiesConfig))
+                .addFilter(new JwtValidationFilter(authenticationManager(), propertiesConfig))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
