@@ -102,6 +102,15 @@ public class FilmService {
         commentService.insert(new Comment(null, film, user, message));
     }
 
+    public void quoteComment(Long filmId, Long commentId, String token, String message) {
+        this.validateParams(filmId, commentId, token, message);
+
+        Comment comment = commentService.findById(commentId);
+        message = "@" + comment.getUser().getName() + ": '" + comment.getMessage() + "' \n\n" + message;
+
+        this.comment(filmId, token, message);
+    }
+
     public void commentResponse(Long commentId, String token, String message) {
         this.validateParams(commentId, token, message);
 
@@ -202,6 +211,12 @@ public class FilmService {
     private void validateParams(Long id, String token, String message) {
         if (id == null || Objects.equals(token, "") || Objects.equals(message, "")) {
             throw new NullParameterException("You cannot comment with null parameters.");
+        }
+    }
+
+    private void validateParams(Long id1, Long id2, String token, String message) {
+        if (id1 == null || id2 == null || Objects.equals(token, "") || Objects.equals(message, "")) {
+            throw new NullParameterException("You cannot quote a comment with null parameters.");
         }
     }
 

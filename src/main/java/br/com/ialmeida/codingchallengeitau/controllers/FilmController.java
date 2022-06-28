@@ -57,6 +57,17 @@ public class FilmController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping(value = "/quoteComment")
+    public ResponseEntity<Void> quoteComment(
+            @RequestParam(value = "filmId", defaultValue = "") Long filmId,
+            @RequestParam(value = "commentId", defaultValue = "") Long commentId,
+            @RequestParam(value = "token", defaultValue = "") String token,
+            @RequestParam(value = "message", defaultValue = "") String message
+    ) {
+        filmService.quoteComment(filmId, commentId, token, message);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping(value = "/react")
     public ResponseEntity<Void> react(
             @RequestParam(value = "commentId", defaultValue = "") Long commentId,
