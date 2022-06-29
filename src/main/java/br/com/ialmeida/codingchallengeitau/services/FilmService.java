@@ -6,9 +6,6 @@ import br.com.ialmeida.codingchallengeitau.entities.*;
 import br.com.ialmeida.codingchallengeitau.entities.enums.Profile;
 import br.com.ialmeida.codingchallengeitau.exceptions.*;
 import br.com.ialmeida.codingchallengeitau.repositories.*;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.SignatureVerificationException;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -60,7 +57,7 @@ public class FilmService {
     public void rating(Long filmId, String token, Double score) {
         this.validateParams(filmId, token, score);
 
-        User user = this.getUserByJwtToken(token);
+        User user = userService.getUserByToken(token);
 
         Film film = this.findById(filmId);
         for (Rating r : film.getRatings()) {
@@ -79,7 +76,7 @@ public class FilmService {
     public void comment(Long filmId, String token, String message) {
         this.validateParams(filmId, token, message);
 
-        User user = this.getUserByJwtToken(token);
+        User user = userService.getUserByToken(token);
         if (user.getProfile().equals(Profile.READER)) {
             throw new ProfileBlockException("You cannot comment with profile = '" + user.getProfile() + "'.");
         }
@@ -102,7 +99,7 @@ public class FilmService {
     public void commentResponse(Long commentId, String token, String message) {
         this.validateParams(commentId, token, message);
 
-        User user = this.getUserByJwtToken(token);
+        User user = userService.getUserByToken(token);
         if (user.getProfile().equals(Profile.READER)) {
             throw new ProfileBlockException("You cannot reply to a comment with profile = '" + user.getProfile() + "'.");
         }
@@ -116,7 +113,7 @@ public class FilmService {
     public void react(Long commentId, String token, Boolean reaction) {
         this.validateParams(commentId, token, reaction);
 
-        User user = this.getUserByJwtToken(token);
+        User user = userService.getUserByToken(token);
         if (user.getProfile().equals(Profile.READER) || user.getProfile().equals(Profile.BASIC)) {
             throw new ProfileBlockException("You cannot react to a comment with profile = '" + user.getProfile() + "'.");
         }
@@ -136,7 +133,7 @@ public class FilmService {
     public void deleteComment(Long commentId, String token) {
         this.validateParams(commentId, token);
 
-        User user = this.getUserByJwtToken(token);
+        User user = userService.getUserByToken(token);
         if (user.getProfile().equals(Profile.READER) || user.getProfile().equals(Profile.BASIC) || user.getProfile().equals(Profile.ADVANCED)) {
             throw new ProfileBlockException("You cannot delete a comment with profile = '" + user.getProfile() + "'.");
         }
@@ -158,7 +155,7 @@ public class FilmService {
     public void setRepeatedComment(Long commentId, String token) {
         this.validateParams(commentId, token);
 
-        User user = this.getUserByJwtToken(token);
+        User user = userService.getUserByToken(token);
         if (user.getProfile().equals(Profile.READER) || user.getProfile().equals(Profile.BASIC) || user.getProfile().equals(Profile.ADVANCED)) {
             throw new ProfileBlockException("You cannot set a comment as repeated with profile = '" + user.getProfile() + "'.");
         }
@@ -173,7 +170,7 @@ public class FilmService {
     public void makeModerator(Long userId, String token) {
         this.validateParams(userId, token);
 
-        User fromUser = this.getUserByJwtToken(token);
+        User fromUser = userService.getUserByToken(token);
         if (fromUser.getProfile() != Profile.MODERATOR) {
             throw new ProfileBlockException("You cannot make someone else a moderator with profile = '" + fromUser.getProfile() + "'.");
         }
@@ -222,19 +219,6 @@ public class FilmService {
 
     private Film insert(Film film) {
         return filmRepository.save(film);
-    }
-
-    private User getUserByJwtToken(String token) {
-        try {
-            token = token.replace("Bearer ", "");
-            String email = JWT.require(Algorithm.HMAC512(propertiesConfig.getTokenSecret()))
-                    .build()
-                    .verify(token)
-                    .getSubject();
-            return userService.findByEmail(email);
-        } catch (SignatureVerificationException e) {
-            throw new JwtAuthenticationException("You must use a valid JWT token.");
-        }
     }
 
 }

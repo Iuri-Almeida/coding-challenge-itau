@@ -1,10 +1,15 @@
 package br.com.ialmeida.codingchallengeitau.services;
 
+import br.com.ialmeida.codingchallengeitau.config.PropertiesConfig;
 import br.com.ialmeida.codingchallengeitau.entities.User;
 import br.com.ialmeida.codingchallengeitau.exceptions.DuplicatedActionException;
+import br.com.ialmeida.codingchallengeitau.exceptions.JwtAuthenticationException;
 import br.com.ialmeida.codingchallengeitau.exceptions.NullParameterException;
 import br.com.ialmeida.codingchallengeitau.exceptions.ResourceNotFoundException;
 import br.com.ialmeida.codingchallengeitau.repositories.UserRepository;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +23,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
+    private final PropertiesConfig propertiesConfig;
 
     public List<User> findAll() {
         return userRepository.findAll();
@@ -47,6 +53,19 @@ public class UserService {
     public void updateUserScore(User user) {
         user.addScore();
         this.updateUser(user);
+    }
+
+    public User getUserByToken(String token) {
+        try {
+            token = token.replace("Bearer ", "");
+            String email = JWT.require(Algorithm.HMAC512(propertiesConfig.getTokenSecret()))
+                    .build()
+                    .verify(token)
+                    .getSubject();
+            return this.findByEmail(email);
+        } catch (SignatureVerificationException e) {
+            throw new JwtAuthenticationException("You must use a valid JWT token.");
+        }
     }
 
     private void validateParams(User user) {
