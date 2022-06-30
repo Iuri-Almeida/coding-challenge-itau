@@ -57,7 +57,6 @@ public class UserService {
 
     public User getUserByToken(String token) {
         try {
-            token = token.replace("Bearer ", "");
             String email = JWT.require(Algorithm.HMAC512(propertiesConfig.getTokenSecret()))
                     .build()
                     .verify(token)

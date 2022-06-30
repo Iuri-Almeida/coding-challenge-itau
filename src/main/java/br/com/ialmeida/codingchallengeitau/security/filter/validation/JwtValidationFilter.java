@@ -30,16 +30,13 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         String HEADER_ATTRIBUTE = "token";
-        String ATTRIBUTE_PREFIX = "Bearer ";
 
-        String attribute = request.getParameter(HEADER_ATTRIBUTE);
+        String token = request.getParameter(HEADER_ATTRIBUTE);
 
-        if (attribute == null || !attribute.startsWith(ATTRIBUTE_PREFIX)) {
+        if (token == null) {
             chain.doFilter(request, response);
             return;
         }
-
-        String token = attribute.replace(ATTRIBUTE_PREFIX, "");
 
         UsernamePasswordAuthenticationToken authenticationToken = this.getAuthenticationToken(token);
 
