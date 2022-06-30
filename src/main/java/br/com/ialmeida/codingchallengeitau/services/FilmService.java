@@ -90,6 +90,11 @@ public class FilmService {
     public void quoteComment(Long filmId, Long commentId, String token, String message) {
         this.validateParams(filmId, commentId, token, message);
 
+        User user = userService.getUserByToken(token);
+        if (user.getProfile().equals(Profile.READER) || user.getProfile().equals(Profile.BASIC)) {
+            throw new ProfileBlockException("You cannot quote a comment with profile = '" + user.getProfile() + "'.");
+        }
+
         Comment comment = commentService.findById(commentId);
         message = "@" + comment.getUser().getName() + ": '" + comment.getMessage() + "' \n\n" + message;
 
