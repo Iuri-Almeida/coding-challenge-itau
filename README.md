@@ -21,7 +21,7 @@ $ git clone https://github.com/Iuri-Almeida/coding-challenge-itau
 
 $ cd coding-challenge-itau
 
-$ docker compose up --build
+$ docker compose up
 ```
 
 
