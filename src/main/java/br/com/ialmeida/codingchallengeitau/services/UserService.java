@@ -44,12 +44,12 @@ public class UserService {
 
         user.setPassword(encoder.encode(user.getPassword()));
 
-        return userRepository.save(new User(null, user.getName(), user.getEmail(), user.getPassword()));
+        return this.updateUser(new User(null, user.getName(), user.getEmail(), user.getPassword()));
     }
 
     @Transactional
-    public void updateUser(User user) {
-        userRepository.save(user);
+    public User updateUser(User user) {
+        return userRepository.save(user);
     }
 
     public void updateUserScore(User user) {
