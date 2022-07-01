@@ -1,0 +1,468 @@
+{
+	"info": {
+		"_postman_id": "d4a4dfc1-b714-4c73-86e6-c52b6fe2b50a",
+		"name": "Coding Challenge Itaú",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User API",
+			"item": [
+				{
+					"name": "GET /api/users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/users?token={user_token}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{user_token}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /api/users/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/users/{user_id}?token={user_token}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								"{user_id}"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{user_token}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /api/makeModerator",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/makeModerator?token={user_token}&userId={user_id}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"makeModerator"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{user_token}"
+								},
+								{
+									"key": "userId",
+									"value": "{user_id}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Film Review API",
+			"item": [
+				{
+					"name": "Film",
+					"item": [
+						{
+							"name": "GET /api/films",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/films?token={user_token}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"films"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{user_token}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /api/film?name={name}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/film?token={user_token}&name={film_name}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"film"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{user_token}"
+										},
+										{
+											"key": "name",
+											"value": "{film_name}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Rating",
+					"item": [
+						{
+							"name": "GET /api/rating",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/rating?token={user_token}&filmId={film_id}&score={score}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"rating"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{user_token}"
+										},
+										{
+											"key": "filmId",
+											"value": "{film_id}"
+										},
+										{
+											"key": "score",
+											"value": "{score}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Comment",
+					"item": [
+						{
+							"name": "GET /api/comment",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/comment?token={user_token}&filmId={film_id}&message={message}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"comment"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{user_token}"
+										},
+										{
+											"key": "filmId",
+											"value": "{film_id}"
+										},
+										{
+											"key": "message",
+											"value": "{message}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /api/deleteComment",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/deleteComment?token={user_token}&commentId={comment_id}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"deleteComment"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{user_token}"
+										},
+										{
+											"key": "commentId",
+											"value": "{comment_id}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /api/setRepeatedComment",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/setRepeatedComment?token={user_token}&commentId={comment_id}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"setRepeatedComment"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{user_token}"
+										},
+										{
+											"key": "commentId",
+											"value": "{comment_id}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /api/commentResponse",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/commentResponse?token={user_token}&commentId={comment_id}&message={message}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"commentResponse"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{user_token}"
+										},
+										{
+											"key": "commentId",
+											"value": "{comment_id}"
+										},
+										{
+											"key": "message",
+											"value": "{message}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /api/quoteComment",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/quoteComment?token={user_token}&filmId={film_id}&commentId={comment_id}&message={message}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"quoteComment"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{user_token}"
+										},
+										{
+											"key": "filmId",
+											"value": "{film_id}"
+										},
+										{
+											"key": "commentId",
+											"value": "{comment_id}"
+										},
+										{
+											"key": "message",
+											"value": "{message}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Reaction",
+					"item": [
+						{
+							"name": "GET /api/react",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/react?token={user_token}&commentId={comment_id}&reaction={reaction}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"react"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{user_token}"
+										},
+										{
+											"key": "commentId",
+											"value": "{comment_id}"
+										},
+										{
+											"key": "reaction",
+											"value": "{reaction}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "POST /login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"letscode@itau.com.br\",\n    \"password\": \"letscode\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /signUp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"letscode\",\n    \"email\": \"letscode@itau.com.br\",\n    \"password\": \"letscode\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/signUp",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"signUp"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
