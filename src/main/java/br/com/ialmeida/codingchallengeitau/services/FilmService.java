@@ -11,6 +11,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 
@@ -222,7 +223,8 @@ public class FilmService {
         }
     }
 
-    private Film insert(Film film) {
+    @Transactional
+    protected Film insert(Film film) {
         return filmRepository.save(film);
     }
 
