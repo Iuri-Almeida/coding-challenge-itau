@@ -20,7 +20,7 @@ $ docker exec cc-postgres pg_restore -c -U postgres -d postgres /docker-entrypoi
 ```
 
 
-## Users
+## Pre-Registered Users
 
 - READER
 
