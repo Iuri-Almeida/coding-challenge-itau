@@ -16,7 +16,7 @@ The [dump.sql][dump] file contains some pre-registered users, so there is no nee
 ### Running
 
 ```shell
-$ docker exec ec-postgres pg_restore -c -U postgres -d postgres /docker-entrypoint-initdb.d/dump.sql
+$ docker exec cc-postgres pg_restore -c -U postgres -d postgres /docker-entrypoint-initdb.d/dump.sql
 ```
 
 

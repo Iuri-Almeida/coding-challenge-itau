@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   api:
-    container_name: ec-api
+    container_name: cc-api
     build:
       context: .
       dockerfile: Dockerfile
@@ -16,7 +16,7 @@ services:
       - cache
 
   db:
-    container_name: ec-postgres
+    container_name: cc-postgres
     build:
       context: ./database
       dockerfile: Dockerfile
@@ -30,7 +30,7 @@ services:
       - POSTGRES_PASSWORD=postgres
 
 #  cache:
-#    container_name: ec-redis
+#    container_name: cc-redis
 #    image: redis
 #    restart: always
 #    networks:
