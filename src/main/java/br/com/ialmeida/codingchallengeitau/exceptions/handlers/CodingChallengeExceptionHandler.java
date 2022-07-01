@@ -45,7 +45,7 @@ public class CodingChallengeExceptionHandler {
     }
 
     @ExceptionHandler(NullParameterException.class)
-    public ResponseEntity<StandardError> duplicatedAction(NullParameterException e, HttpServletRequest request) {
+    public ResponseEntity<StandardError> nullParameter(NullParameterException e, HttpServletRequest request) {
         String error = "Parameter null";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
