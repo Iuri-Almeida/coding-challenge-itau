@@ -29,14 +29,5 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
 
-#  cache:
-#    container_name: cc-redis
-#    image: redis
-#    restart: always
-#    networks:
-#      - backend
-#    ports:
-#      - '6379:6379'
-
 networks:
   backend:
