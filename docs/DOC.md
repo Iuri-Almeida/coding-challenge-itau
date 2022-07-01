@@ -3,7 +3,7 @@
 
 ## Description
 
-The file [Coding Challenge Itau][postman-file] contains all the endpoints listed below, so there is no need to write everything, just import the file.
+The [Coding Challenge Itau][postman-file] file contains all the endpoints listed below, so there is no need to write everything, just import the file.
 
 
 ## Endpoints
