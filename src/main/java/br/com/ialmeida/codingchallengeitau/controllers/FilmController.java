@@ -2,10 +2,9 @@ package br.com.ialmeida.codingchallengeitau.controllers;
 
 import br.com.ialmeida.codingchallengeitau.entities.Film;
 import br.com.ialmeida.codingchallengeitau.services.FilmService;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,79 +28,79 @@ public class FilmController {
 
     @GetMapping(value = "/rating")
     public ResponseEntity<Void> rating(
+            Authentication authentication,
             @RequestParam(value = "filmId", defaultValue = "") Long filmId,
-            @RequestParam(value = "token", defaultValue = "") String token,
             @RequestParam(value = "score", defaultValue = "") Double score
     ) {
-        filmService.rating(filmId, token, score);
+        filmService.rating(filmId, String.valueOf(authentication.getPrincipal()), score);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = "/comment")
     public ResponseEntity<Void> comment(
+            Authentication authentication,
             @RequestParam(value = "filmId", defaultValue = "") Long filmId,
-            @RequestParam(value = "token", defaultValue = "") String token,
             @RequestParam(value = "message", defaultValue = "") String message
     ) {
-        filmService.comment(filmId, token, message);
+        filmService.comment(filmId, String.valueOf(authentication.getPrincipal()), message);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = "/commentResponse")
     public ResponseEntity<Void> commentResponse(
+            Authentication authentication,
             @RequestParam(value = "commentId", defaultValue = "") Long commentId,
-            @RequestParam(value = "token", defaultValue = "") String token,
             @RequestParam(value = "message", defaultValue = "") String message
     ) {
-        filmService.commentResponse(commentId, token, message);
+        filmService.commentResponse(commentId, String.valueOf(authentication.getPrincipal()), message);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = "/quoteComment")
     public ResponseEntity<Void> quoteComment(
+            Authentication authentication,
             @RequestParam(value = "filmId", defaultValue = "") Long filmId,
             @RequestParam(value = "commentId", defaultValue = "") Long commentId,
-            @RequestParam(value = "token", defaultValue = "") String token,
             @RequestParam(value = "message", defaultValue = "") String message
     ) {
-        filmService.quoteComment(filmId, commentId, token, message);
+        filmService.quoteComment(filmId, commentId, String.valueOf(authentication.getPrincipal()), message);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = "/react")
     public ResponseEntity<Void> react(
+            Authentication authentication,
             @RequestParam(value = "commentId", defaultValue = "") Long commentId,
-            @RequestParam(value = "token", defaultValue = "") String token,
             @RequestParam(value = "reaction", defaultValue = "") Boolean reaction
     ) {
-        filmService.react(commentId, token, reaction);
+        filmService.react(commentId, String.valueOf(authentication.getPrincipal()), reaction);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = "/deleteComment")
     public ResponseEntity<Void> deleteComment(
-            @RequestParam(value = "commentId", defaultValue = "") Long commentId,
-            @RequestParam(value = "token", defaultValue = "") String token
+            Authentication authentication,
+            @RequestParam(value = "commentId", defaultValue = "") Long commentId
     ) {
-        filmService.deleteComment(commentId, token);
+        filmService.deleteComment(commentId, String.valueOf(authentication.getPrincipal()));
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = "/setRepeatedComment")
     public ResponseEntity<Void> setRepeatedComment(
-            @RequestParam(value = "commentId", defaultValue = "") Long commentId,
-            @RequestParam(value = "token", defaultValue = "") String token
+            Authentication authentication,
+            @RequestParam(value = "commentId", defaultValue = "") Long commentId
     ) {
-        filmService.setRepeatedComment(commentId, token);
+        filmService.setRepeatedComment(commentId, String.valueOf(authentication.getPrincipal()));
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = "/makeModerator")
     public ResponseEntity<Void> makeModerator(
-            @RequestParam(value = "userId", defaultValue = "") Long userId,
-            @RequestParam(value = "token", defaultValue = "") String token
+            Authentication authentication,
+            @RequestParam(value = "userId", defaultValue = "") Long userId
     ) {
-        filmService.makeModerator(userId, token);
+        filmService.makeModerator(userId, String.valueOf(authentication.getPrincipal()));
         return ResponseEntity.noContent().build();
     }
 

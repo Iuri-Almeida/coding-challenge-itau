@@ -57,18 +57,6 @@ public class UserService {
         this.updateUser(user);
     }
 
-    public User getUserByToken(String token) {
-        try {
-            String email = JWT.require(Algorithm.HMAC512(propertiesConfig.getTokenSecret()))
-                    .build()
-                    .verify(token)
-                    .getSubject();
-            return this.findByEmail(email);
-        } catch (SignatureVerificationException e) {
-            throw new JwtAuthenticationException("You must use a valid JWT token.");
-        }
-    }
-
     private void validateParams(User user) {
         if (user.getName() == null || user.getEmail() == null || user.getPassword() == null) {
             throw new NullParameterException("You cannot save user with null parameters.");

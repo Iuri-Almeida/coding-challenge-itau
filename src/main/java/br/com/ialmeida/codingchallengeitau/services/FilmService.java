@@ -55,10 +55,10 @@ public class FilmService {
         return films;
     }
 
-    public void rating(Long filmId, String token, Double score) {
-        this.validateParams(filmId, token, score);
+    public void rating(Long filmId, String email, Double score) {
+        this.validateParams(filmId, email, score);
 
-        User user = userService.getUserByToken(token);
+        User user = userService.findByEmail(email);
 
         Film film = this.findById(filmId);
         for (Rating r : film.getRatings()) {
@@ -74,10 +74,10 @@ public class FilmService {
         ratingService.insert(new Rating(null, film, user, score));
     }
 
-    public void comment(Long filmId, String token, String message) {
-        this.validateParams(filmId, token, message);
+    public void comment(Long filmId, String email, String message) {
+        this.validateParams(filmId, email, message);
 
-        User user = userService.getUserByToken(token);
+        User user = userService.findByEmail(email);
         if (user.getProfile().equals(Profile.READER)) {
             throw new ProfileBlockException("You cannot comment with profile = '" + user.getProfile() + "'.");
         }
@@ -88,10 +88,10 @@ public class FilmService {
         commentService.insert(new Comment(null, film, user, message));
     }
 
-    public void quoteComment(Long filmId, Long commentId, String token, String message) {
-        this.validateParams(filmId, commentId, token, message);
+    public void quoteComment(Long filmId, Long commentId, String email, String message) {
+        this.validateParams(filmId, commentId, email, message);
 
-        User user = userService.getUserByToken(token);
+        User user = userService.findByEmail(email);
         if (user.getProfile().equals(Profile.READER) || user.getProfile().equals(Profile.BASIC)) {
             throw new ProfileBlockException("You cannot quote a comment with profile = '" + user.getProfile() + "'.");
         }
@@ -99,13 +99,13 @@ public class FilmService {
         Comment comment = commentService.findById(commentId);
         message = "@" + comment.getUser().getName() + ": '" + comment.getMessage() + "' \n\n" + message;
 
-        this.comment(filmId, token, message);
+        this.comment(filmId, email, message);
     }
 
-    public void commentResponse(Long commentId, String token, String message) {
-        this.validateParams(commentId, token, message);
+    public void commentResponse(Long commentId, String email, String message) {
+        this.validateParams(commentId, email, message);
 
-        User user = userService.getUserByToken(token);
+        User user = userService.findByEmail(email);
         if (user.getProfile().equals(Profile.READER)) {
             throw new ProfileBlockException("You cannot reply to a comment with profile = '" + user.getProfile() + "'.");
         }
@@ -116,10 +116,10 @@ public class FilmService {
         commentResponseService.insert(new CommentResponse(null, user, comment, message));
     }
 
-    public void react(Long commentId, String token, Boolean reaction) {
-        this.validateParams(commentId, token, reaction);
+    public void react(Long commentId, String email, Boolean reaction) {
+        this.validateParams(commentId, email, reaction);
 
-        User user = userService.getUserByToken(token);
+        User user = userService.findByEmail(email);
         if (user.getProfile().equals(Profile.READER) || user.getProfile().equals(Profile.BASIC)) {
             throw new ProfileBlockException("You cannot react to a comment with profile = '" + user.getProfile() + "'.");
         }
@@ -136,10 +136,10 @@ public class FilmService {
         reactionService.insert(new Reaction(null, user, comment, reaction));
     }
 
-    public void deleteComment(Long commentId, String token) {
-        this.validateParams(commentId, token);
+    public void deleteComment(Long commentId, String email) {
+        this.validateParams(commentId, email);
 
-        User user = userService.getUserByToken(token);
+        User user = userService.findByEmail(email);
         if (user.getProfile().equals(Profile.READER) || user.getProfile().equals(Profile.BASIC) || user.getProfile().equals(Profile.ADVANCED)) {
             throw new ProfileBlockException("You cannot delete a comment with profile = '" + user.getProfile() + "'.");
         }
@@ -158,10 +158,10 @@ public class FilmService {
         }
     }
 
-    public void setRepeatedComment(Long commentId, String token) {
-        this.validateParams(commentId, token);
+    public void setRepeatedComment(Long commentId, String email) {
+        this.validateParams(commentId, email);
 
-        User user = userService.getUserByToken(token);
+        User user = userService.findByEmail(email);
         if (user.getProfile().equals(Profile.READER) || user.getProfile().equals(Profile.BASIC) || user.getProfile().equals(Profile.ADVANCED)) {
             throw new ProfileBlockException("You cannot set a comment as repeated with profile = '" + user.getProfile() + "'.");
         }
@@ -173,10 +173,10 @@ public class FilmService {
         commentService.insert(comment);
     }
 
-    public void makeModerator(Long userId, String token) {
-        this.validateParams(userId, token);
+    public void makeModerator(Long userId, String email) {
+        this.validateParams(userId, email);
 
-        User fromUser = userService.getUserByToken(token);
+        User fromUser = userService.findByEmail(email);
         if (fromUser.getProfile() != Profile.MODERATOR) {
             throw new ProfileBlockException("You cannot make someone else a moderator with profile = '" + fromUser.getProfile() + "'.");
         }
@@ -193,32 +193,32 @@ public class FilmService {
         }
     }
 
-    private void validateParams(Long id, String token, Double score) {
-        if (id == null || Objects.equals(token, "") || score == null) {
+    private void validateParams(Long id, String email, Double score) {
+        if (id == null || Objects.equals(email, "") || score == null) {
             throw new NullParameterException("You cannot rate with null parameters.");
         }
     }
 
-    private void validateParams(Long id, String token, String message) {
-        if (id == null || Objects.equals(token, "") || Objects.equals(message, "")) {
+    private void validateParams(Long id, String email, String message) {
+        if (id == null || Objects.equals(email, "") || Objects.equals(message, "")) {
             throw new NullParameterException("You cannot comment with null parameters.");
         }
     }
 
-    private void validateParams(Long id1, Long id2, String token, String message) {
-        if (id1 == null || id2 == null || Objects.equals(token, "") || Objects.equals(message, "")) {
+    private void validateParams(Long id1, Long id2, String email, String message) {
+        if (id1 == null || id2 == null || Objects.equals(email, "") || Objects.equals(message, "")) {
             throw new NullParameterException("You cannot quote a comment with null parameters.");
         }
     }
 
-    private void validateParams(Long id, String token, Boolean reaction) {
-        if (id == null || Objects.equals(token, "") || reaction == null) {
+    private void validateParams(Long id, String email, Boolean reaction) {
+        if (id == null || Objects.equals(email, "") || reaction == null) {
             throw new NullParameterException("You cannot react with null parameters.");
         }
     }
 
-    private void validateParams(Long id, String token) {
-        if (id == null || Objects.equals(token, "")) {
+    private void validateParams(Long id, String email) {
+        if (id == null || Objects.equals(email, "")) {
             throw new NullParameterException("You cannot make moderator, delete or set a comment as repeated with null parameters.");
         }
     }
