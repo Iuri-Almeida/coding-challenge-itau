@@ -32,10 +32,10 @@
 * **[GET] - /api/users?token={user_token}:** list all users.
 
 
-* **[GET] - /api/users/{id}?token={user_token}:** list user with id = {id}.
+* **[GET] - /api/users/{user_id}?token={user_token}:** list user with id = {user_id}.
 
 
-* **[GET] - /api/makeModerator?token={user_token}&userId={id}:** make the user with id = {id} a moderator.
+* **[GET] - /api/makeModerator?token={user_token}&userId={user_id}:** make the user with id = {user_id} a moderator.
 
 
 ### Film
