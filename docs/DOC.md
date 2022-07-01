@@ -1,6 +1,11 @@
 # Documentation
 
 
+## Description
+
+The file [Coding Challenge Itau][postman-file] contains all the endpoints listed below, so there is no need to write everything, just import the file.
+
+
 ## Endpoints
 
 
@@ -72,3 +77,6 @@
 
 * **[GET] - /api/react?token={user_token}&commentId={comment_id}&reaction={reaction}:** reacts to comment with id = {comment_id} positively (true) or negatively (false).
 
+
+<!-- Links -->
+[postman-file]: https://github.com/Iuri-Almeida/coding-challenge-itau/blob/master/docs/Coding_Challenge_Itau.json
