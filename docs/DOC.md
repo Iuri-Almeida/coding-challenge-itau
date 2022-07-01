@@ -40,7 +40,7 @@
 
 ### Film
 
-* **[GET] - /api/films?token={user_token}:** list all users.
+* **[GET] - /api/films?token={user_token}:** list all films.
 
 
 * **[GET] - /api/films?token={user_token}&name={film_name}:** search for a film with name = {film_name}.
