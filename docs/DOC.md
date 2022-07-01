@@ -3,7 +3,7 @@
 
 ## Description
 
-The [Coding Challenge Itau][postman-file] file contains all the endpoints listed below, so there is no need to write everything, just import the file.
+After running `docker compose up` command, the application can be accessed at `http://localhost:8080/`. The [Coding Challenge Itau][postman-file] file contains all the endpoints listed below, so there is no need to write everything, just import the file.
 
 
 ## Endpoints
