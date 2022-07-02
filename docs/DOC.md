@@ -22,7 +22,7 @@ After running `docker compose up` command, the application can be accessed at `h
   }
   ```
 
-* **[POST] - /login:**  login into the application.
+* **[POST] - /login:**  log into the application.
 
   ```json
   {
